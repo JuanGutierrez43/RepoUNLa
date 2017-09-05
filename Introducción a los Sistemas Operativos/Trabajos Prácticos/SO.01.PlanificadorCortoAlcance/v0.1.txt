@@ -1,0 +1,107 @@
+public Tabla[][] pranificarFIFO() {
+
+		Tabla[][] auxTabla = new Tabla[cantidadFilas][cantidaColumnas];
+		setTabla(auxTabla, tabla); //inicializo
+		List<Proceso> auxLstProceso = new ArrayList<Proceso>();
+		
+		/* primera pasada */
+		for (Proceso proceso : lstProcesos) {
+			int idProceso=1;
+			if (!auxLstProceso.isEmpty()) { // busco la id
+				idProceso=proceso.getIdProceso();
+			}
+			if(idProceso>1){ //para todos los proceso actualizo getComienzaTiempo(); exepto para el 1ro
+				proceso.setComienzaTiempo(auxLstProceso.get(idProceso-2).getComienzaTiempo()+auxLstProceso.get(idProceso-2).getDuracion().getiCPU());
+			}
+			auxLstProceso.add(proceso);
+		}
+		/* por toda la tabla agrego los estados de Ejecutando y Bloqueado */
+		for (int i = 0; i < getCantidaColumnas(); i++) {
+			for (int k = 0; k < auxLstProceso.size(); k++) {
+				/* reviso los procesos auxiliares */
+				if (auxLstProceso.get(k).getComienzaTiempo() == i + 1) {
+					for (int k2 = 0; k2 < auxLstProceso.get(k).getDuracion().getiCPU(); k2++) {
+						// agrego todos los Estados "Ejecutando"
+						auxTabla[k][i+k2].setEstado("E");
+						if(k2==auxLstProceso.get(k).getDuracion().getiCPU()-1){
+							// agrego todos los Estados "Bloqueado"
+							for (int l = 1; l <= auxLstProceso.get(k).getDuracion().getEyS(); l++) {
+								auxTabla[k][i+l+k2].setEstado("B");
+							}
+							
+						}//fin if
+					}//fin for
+				}//fin if
+			}//fin for (k)
+		}//fin for (i)
+		
+		/* segunda pasada */
+		// cambio el inicio de getComienzaTiempo();
+		
+		//soluciona casos de bloqueos largos
+		int ptrfin=auxLstProceso.get(auxLstProceso.size()-1).getComienzaTiempo()+auxLstProceso.get(auxLstProceso.size()-1).getDuracion().getiCPU();
+		
+		
+		for (int i = 0; i < auxLstProceso.size(); i++) {
+			//guardo ultimo lugar disponible
+			int terminaT=auxLstProceso.get(i).getDuracion().getiCPU()+auxLstProceso.get(i).getDuracion().getEyS()+auxLstProceso.get(i).getComienzaTiempo();
+			for (Proceso proceso : auxLstProceso) {	
+				
+				if (proceso.getComienzaTiempo()<=ptrfin) {
+					// pregunto si el proceso esta listo
+					//int terminaT=proceso.getDuracion().getiCPU()+proceso.getDuracion().getEyS()+proceso.getComienzaTiempo();
+					if (terminaT<=ptrfin) {
+						//System.out.println("entra: "+terminaT+" de "+ptrfin);
+						// busco la id
+						int idProceso=proceso.getIdProceso();
+						// proceso a acomodar los procesos
+						
+						if(idProceso==1){
+							int P1=proceso.getDuracion().getiCPU()+proceso.getDuracion().getEyS();
+							int Pnfin=auxLstProceso.get(auxLstProceso.size()-1).getComienzaTiempo()+auxLstProceso.get(auxLstProceso.size()-1).getDuracion().getiCPU();
+							//System.out.println("P1:"+P1+" PnFin:"+ptrfin);
+							if (P1>ptrfin) {
+								//System.out.println("1ro: "+auxLstProceso.get(auxLstProceso.size()-1).getComienzaTiempo());
+							}
+							auxLstProceso.get(0).setComienzaTiempo(Pnfin);	
+							System.out.println(auxLstProceso.get(0));
+							//ptrfin=auxLstProceso.get(0).getComienzaTiempo()+auxLstProceso.get(0).getDuracion().getiCPU();
+						}
+						
+						if(idProceso>1){
+							//System.out.println("2ro: "+auxLstProceso.get(0).getComienzaTiempo());
+							System.out.println(proceso);
+							auxLstProceso.get(idProceso-1).setComienzaTiempo(auxLstProceso.get(idProceso-2).getComienzaTiempo()+auxLstProceso.get(idProceso-2).getDuracion().getfCPU());	
+							
+							//ptrfin=auxLstProceso.get(idProceso-1).getComienzaTiempo()+auxLstProceso.get(idProceso-1).getDuracion().getiCPU();
+						}
+					}
+					
+					
+				}
+			}
+		}
+		
+		/* por toda la tabla agrego los estados de Ejecutando y Terminado */
+		/* por toda la tabla agrego los estados de Ejecutando y Bloqueado */
+		for (int i = 0; i < getCantidaColumnas(); i++) {
+			for (int k = 0; k < auxLstProceso.size(); k++) { // cambiar auxLstProceso.size()
+				/* reviso los procesos auxiliares */
+				if (auxLstProceso.get(k).getComienzaTiempo() == i + 1) {
+					for (int k2 = 0; k2 < auxLstProceso.get(k).getDuracion().getfCPU(); k2++) {
+						// agrego todos los Estados "Ejecutando"
+						auxTabla[k][i+k2].setEstado("E");
+						if(k2==auxLstProceso.get(k).getDuracion().getfCPU()-1){
+							// agrego todos los Estados "Bloqueado"
+							for (int l = 1; l <= 1; l++) {
+								auxTabla[k][i+l+k2].setEstado("T");
+							}
+							
+						}//fin if
+					}//fin for
+				}//fin if
+			}//fin for (k)
+		}//fin for (i)
+		
+		return auxTabla;
+	}
