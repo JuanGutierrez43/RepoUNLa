@@ -74,8 +74,23 @@ public class Proceso {
 				+ ", Tiempo Comienza=" + getComienzaTiempo() 
 				+ ", Duracion=" + getDuracion()
 				+ ", Prioridad=" + getPrioridad()
-				+ "\n";
+				;
 	}
 	
+	public boolean equals(int idProceso) {
+		boolean validate=false;
+		if (getIdProceso()==idProceso){
+			validate=true;
+		}
+		return validate;
+	}
+
+	public boolean equal(Proceso proceso) {
+		boolean validate=false;
+		if (getIdProceso()==proceso.getIdProceso()){
+			validate=true;
+		}
+		return validate;
+	}
 	
 }

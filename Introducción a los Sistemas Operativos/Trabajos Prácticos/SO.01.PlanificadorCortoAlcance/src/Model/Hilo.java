@@ -3,22 +3,13 @@ package Model;
 public class Hilo {
 
 	private int idHilo;
-	private boolean listo;
 	private boolean ejecutando;
-	private boolean bloqueado;
+	private Proceso proceso;
 
-	public Hilo() {
-		this.idHilo = 1;
-		this.listo = true;
-		this.ejecutando = false;
-		this.bloqueado = false;
-	}
-	
-	public Hilo(int idHilo, boolean listo, boolean ejecutando, boolean bloqueado) {
+	public Hilo(int idHilo) {
 		this.idHilo = idHilo;
-		this.listo = listo;
-		this.ejecutando = ejecutando;
-		this.bloqueado = bloqueado;
+		this.ejecutando = false;
+		this.proceso = null;
 	}
 
 	public int getIdHilo() {
@@ -29,14 +20,6 @@ public class Hilo {
 		this.idHilo = idHilo;
 	}
 
-	public boolean isListo() {
-		return listo;
-	}
-
-	public void setListo(boolean listo) {
-		this.listo = listo;
-	}
-
 	public boolean isEjecutando() {
 		return ejecutando;
 	}
@@ -45,19 +28,47 @@ public class Hilo {
 		this.ejecutando = ejecutando;
 	}
 
-	public boolean isBloqueado() {
-		return bloqueado;
+	public Proceso getProceso() {
+		return proceso;
 	}
 
-	public void setBloqueado(boolean bloqueado) {
-		this.bloqueado = bloqueado;
+	public void setProceso(Proceso proceso) {
+		this.proceso = proceso;
+	}
+
+	// métodos
+	public boolean ejecutarInstrucción() {
+		boolean ejecutado = false;
+		int tiempo = getProceso().getDuracion().getiCPU();
+		if (tiempo > 0) {
+			getProceso().getDuracion().setiCPU(tiempo - 1);
+			ejecutado = true;
+		} else {
+			tiempo = getProceso().getDuracion().getfCPU();
+			if (tiempo > 0) {
+				getProceso().getDuracion().setfCPU(tiempo - 1);
+				ejecutado = true;
+			}
+		}
+		return ejecutado;
+	}
+	
+	public Proceso eliminarProceso(){
+		Proceso procesoAux = null;
+		if (isEjecutando()) {
+			procesoAux = getProceso();
+			setProceso(null);
+			setEjecutando(false);
+		}
+		return procesoAux;
 	}
 
 	@Override
 	public String toString() {
-		return "Hilo [getIdHilo()=" + getIdHilo() + ", isListo()=" + isListo() + ", isEjecutando()=" + isEjecutando()
-				+ ", isBloqueado()=" + isBloqueado() + "]";
+		return "IdHilo=" + getIdHilo()
+				+ ", Ejecutando="+ isEjecutando()
+				+ ", Proceso=["+ getProceso()
+				+ "]";
 	}
 
-	
 }
