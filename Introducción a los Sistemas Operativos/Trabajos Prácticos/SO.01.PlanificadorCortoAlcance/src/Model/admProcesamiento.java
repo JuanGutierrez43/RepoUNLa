@@ -81,6 +81,7 @@ public class admProcesamiento {
 		this.hilo = hilo;
 	}
 
+	/*------------------------------------------------------*/
 	public boolean agregarProceso(String proceso, int comienzaTiempo, int iCPU, int eyS, int fCPU,
 			Prioridad prioridad) {
 		boolean agregar = false;
@@ -94,20 +95,28 @@ public class admProcesamiento {
 	}
 	
 	/*------------------------------------------------------*/
+	public String mostrarAlgoritmoFIFO(){
+		return getLstProcesos()+"\n"+toString(pranificarFIFO());
+	}
+	
 	public Tabla[][] pranificarFIFO() {
 
 		Tabla[][] auxTabla = new Tabla[cantidadFilas][cantidaColumnas];
 		setTabla(auxTabla, tabla); //inicializo
+		List<Proceso> auxLstProcesoOrden = new ArrayList<Proceso>();
 		List<Proceso> auxLstProceso = new ArrayList<Proceso>();
 
 		/*-------------- primera pasada ------------*/
-		for (Proceso proceso : lstProcesos) {
+		// Cargo todos los procesos ordenados por Tiempo Comienza
+		// sin implementar
+		
+		// Cargo todos los procesos a un Lista Aux
+		for (Proceso proceso : getLstProcesos()) {
 			int idProceso=1;
 			if (!auxLstProceso.isEmpty()) { // busco la id
 				idProceso=proceso.getIdProceso();
 			}
 			Proceso auxProceso1=new Proceso(proceso.getIdProceso(),proceso.getProceso(),proceso.getComienzaTiempo(),proceso.getPrioridad(),proceso.getDuracion());
-			
 			if(idProceso>1){ //para todos los proceso actualizo getComienzaTiempo(); exepto para el 1ro
 				int inicia=auxLstProceso.get(idProceso-2).getComienzaTiempo()+auxLstProceso.get(idProceso-2).getDuracion().getiCPU();
 				if(auxProceso1.getComienzaTiempo()<=inicia){
@@ -116,6 +125,7 @@ public class admProcesamiento {
 			}
 			auxLstProceso.add(auxProceso1);
 		}
+		
 		
 		if (!auxLstProceso.isEmpty()) {
 		/* por toda la tabla agrego los estados de Ejecutando y Bloqueado */
@@ -138,17 +148,18 @@ public class admProcesamiento {
 			}//fin for (k)
 		}//fin for (i)
 		
+		// bien implementado
+		
 		/*-------------- segunda pasada ------------*/
 		int ptrfin=auxLstProceso.get(auxLstProceso.size()-1).getComienzaTiempo()+auxLstProceso.get(auxLstProceso.size()-1).getDuracion().getiCPU();
 		for (int i = 0; i < auxLstProceso.size(); i++) {
-			//guardo ultimo lugar disponible
+			//guardo último lugar disponible 
 			int terminaT=auxLstProceso.get(i).getDuracion().getiCPU()+auxLstProceso.get(i).getDuracion().getEyS()+auxLstProceso.get(i).getComienzaTiempo();
 			for (Proceso proceso : auxLstProceso) {	
 				if (proceso.getComienzaTiempo()<=ptrfin) {
 					// pregunto si el proceso esta listo
 					//int terminaT=proceso.getDuracion().getiCPU()+proceso.getDuracion().getEyS()+proceso.getComienzaTiempo();
 					if (terminaT<=ptrfin) {
-						//System.out.println("entra: "+terminaT+" de "+ptrfin);
 						// busco la id
 						int idProceso=proceso.getIdProceso();
 						// proceso a acomodar los procesos
@@ -161,17 +172,11 @@ public class admProcesamiento {
 								//System.out.println("1ro: "+auxLstProceso.get(auxLstProceso.size()-1).getComienzaTiempo());
 							}
 							auxLstProceso.get(0).setComienzaTiempo(Pnfin);	
-							//System.out.println(auxLstProceso.get(0));
-							//ptrfin=auxLstProceso.get(0).getComienzaTiempo()+auxLstProceso.get(0).getDuracion().getiCPU();
 						}
 						
 						if(idProceso>1){
-							//System.out.println("2ro: "+auxLstProceso.get(0).getComienzaTiempo());
-							//System.out.println(proceso);
 							auxLstProceso.get(idProceso-1).setComienzaTiempo(auxLstProceso.get(idProceso-2).getComienzaTiempo()+auxLstProceso.get(idProceso-2).getDuracion().getfCPU());	
-							//ptrfin=auxLstProceso.get(idProceso-1).getComienzaTiempo()+auxLstProceso.get(idProceso-1).getDuracion().getiCPU();
 						}
-						
 					}	
 				}
 			}
@@ -201,8 +206,10 @@ public class admProcesamiento {
 		return auxTabla;
 	}
 
-	public String mostrarAlgoritmoFIFO(){
-		return getLstProcesos()+"\n"+toString(pranificarFIFO());
+
+	/*------------------------------------------------------*/
+	public String mostrarAlgoritmoPrioridad(){
+		return getLstProcesos()+"\n"+toString(pranificarPrioridad());
 	}
 	
 	public Tabla[][] pranificarPrioridad(){
@@ -235,7 +242,7 @@ public class admProcesamiento {
 						
 						
 						
-						if (!auxLstProceso.isEmpty()) {//esta vacia sigo
+						if (!auxLstProceso.isEmpty()) {//no esta vacia sigo
 							
 							//ordenamiento por "Prioridad"
 							int lenD=auxLstProceso.size();
