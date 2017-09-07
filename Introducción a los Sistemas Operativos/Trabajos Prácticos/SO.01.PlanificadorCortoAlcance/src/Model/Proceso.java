@@ -2,6 +2,7 @@ package Model;
 
 public class Proceso {
 
+
 	private int idProceso;
 	private String proceso;
 	private int comienzaTiempo;
@@ -85,12 +86,25 @@ public class Proceso {
 		return validate;
 	}
 
+	// nuevo
 	public boolean equal(Proceso proceso) {
 		boolean validate=false;
-		if (getIdProceso()==proceso.getIdProceso()){
+		if (this.hashCode() == proceso.hashCode()){
 			validate=true;
 		}
 		return validate;
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + comienzaTiempo;
+		result = prime * result + ((duracion == null) ? 0 : duracion.hashCode());
+		result = prime * result + idProceso;
+		result = prime * result + ((prioridad == null) ? 0 : prioridad.hashCode());
+		result = prime * result + ((proceso == null) ? 0 : proceso.hashCode());
+		return result;
 	}
 	
 }

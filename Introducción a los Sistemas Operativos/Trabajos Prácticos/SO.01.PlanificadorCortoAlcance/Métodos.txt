@@ -1,6 +1,11 @@
 agregarProceso()
 traerProceso()
 
+listarProcesosFIFO()
+-> listarProceso
+-> deslistarProceso
+deslistarProcesoFIFO()
+
 ejecutarProceso()
 -> ejecutarInstrucción()
 -> eliminarProceso()
@@ -11,11 +16,6 @@ bloquearProceso()
 -> ejecutarE/S()
 -> eliminarBloqueado()
 desbloquearProceso()
-
-listarProcesosFIFO()
--> listarProceso
--> deslistarProceso
-deslistarProcesoFIFO()
 
 mostrarAlgoritmoFIFO()
 planificarFIFO()
