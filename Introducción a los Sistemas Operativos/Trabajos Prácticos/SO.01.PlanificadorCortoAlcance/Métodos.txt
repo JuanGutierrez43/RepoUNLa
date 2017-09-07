@@ -1,0 +1,27 @@
+agregarProceso()
+traerProceso()
+
+ejecutarProceso()
+-> ejecutarInstrucción()
+-> eliminarProceso()
+terminarProceso()
+
+bloquearProceso()
+-> traerProceso()
+-> ejecutarE/S()
+-> eliminarBloqueado()
+desbloquearProceso()
+
+listarProcesosFIFO()
+-> listarProceso
+-> deslistarProceso
+deslistarProcesoFIFO()
+
+mostrarAlgoritmoFIFO()
+planificarFIFO()
+
+
+
+
+
+

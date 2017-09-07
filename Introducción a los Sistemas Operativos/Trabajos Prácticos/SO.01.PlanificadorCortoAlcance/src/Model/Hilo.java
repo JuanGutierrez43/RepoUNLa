@@ -40,12 +40,12 @@ public class Hilo {
 	public boolean ejecutarInstrucción() {
 		boolean ejecutado = false;
 		int tiempo = getProceso().getDuracion().getiCPU();
-		if (tiempo > 0) {
+		if (tiempo >= 0) {
 			getProceso().getDuracion().setiCPU(tiempo - 1);
 			ejecutado = true;
 		} else {
 			tiempo = getProceso().getDuracion().getfCPU();
-			if (tiempo > 0) {
+			if (tiempo >= 0) {
 				getProceso().getDuracion().setfCPU(tiempo - 1);
 				ejecutado = true;
 			}

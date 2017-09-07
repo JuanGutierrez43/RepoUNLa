@@ -1,5 +1,1 @@
-errores: inicia los procesos despues de lo normal
-errores: resuelve los procesos reactivado estando bloqueado 
-errores: ordenar el fifo por orden de llegada
-
-resuelto: objetos-proceso se modifica el objeto original
+errores:0

@@ -77,7 +77,7 @@ public class Proceso {
 				;
 	}
 	
-	public boolean equals(int idProceso) {
+	public boolean equal(int idProceso) {
 		boolean validate=false;
 		if (getIdProceso()==idProceso){
 			validate=true;

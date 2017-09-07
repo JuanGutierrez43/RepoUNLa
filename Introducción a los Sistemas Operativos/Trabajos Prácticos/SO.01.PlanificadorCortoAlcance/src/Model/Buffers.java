@@ -43,48 +43,49 @@ public class Buffers {
 		if (!getLstProcesos().isEmpty()) {
 			lenD = getLstProcesos().size();
 			while (i < lenD) {
-				if (getLstProcesos().get(i).equals(idProceso)) {
+				if (getLstProcesos().get(i).equal(idProceso)) {
 					procesoAux = getLstProcesos().get(i);
-					i=lenD;
+					i = lenD;
 				}
 				i++;
 			}
 		}
 		return procesoAux;
 	}
-	
-	public boolean ejecutarEyS(int idProceso){
+
+	public boolean ejecutarEyS(int idProceso) {
 		boolean ejecutado = false;
 		Proceso procesoAux = null;
-		int tiempo=0;
+		int tiempo = 0;
 		if (!traerProceso(idProceso).equals(null)) {
-			procesoAux=traerProceso(idProceso);
-			tiempo=procesoAux.getDuracion().getEyS();
-			if(tiempo>0){
-				procesoAux.getDuracion().setEyS(tiempo-1);
-				ejecutado=true;
+			procesoAux = traerProceso(idProceso);
+
+			tiempo = procesoAux.getDuracion().getEyS();
+			if (tiempo >= 0) {
+				procesoAux.getDuracion().setEyS(tiempo - 1);
+				ejecutado = true;
 			}
 		}
 		return ejecutado;
 	}
-	
-	public Proceso eliminarBloqueado(int idProceso){
+
+	public Proceso eliminarBloqueado(int idProceso) {
 		Proceso procesoAux = null;
-		if(!traerProceso(idProceso).equals(null)){
-			procesoAux=traerProceso(idProceso);
-			int i=0;
+		if (!traerProceso(idProceso).equals(null)) {
+			procesoAux = traerProceso(idProceso);
+			int i = 0;
 			int lenD = getLstProcesos().size();
 			while (i < lenD) {
-				if (traerProceso(i+1).equals(idProceso)) {
+				if (getLstProcesos().get(i).equal(idProceso)) {
 					getLstProcesos().remove(i);
-					i=lenD;
+					i = lenD;
 				}
 				i++;
 			}
 		}
 		return procesoAux;
 	}
-	
+
 	@Override
 	public String toString() {
 		String string = "IdBuffers=" + getIdBuffers();

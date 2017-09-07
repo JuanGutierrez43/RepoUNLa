@@ -61,6 +61,9 @@ public class TestPlanificacion {
 		//test6
 		System.out.println("Test 6: "+admP.desbloquearProceso(1)+" Eliminado");
 		System.out.println("\t"+admP.getBuffers());// Compruebo
+		System.out.println("Test 6: "+admP.desbloquearProceso(2)+" Eliminado");
+		System.out.println("\t"+admP.getBuffers());// Compruebo
+		
 		
 		System.out.println("-----------Listo-----------");
 		//test7
@@ -73,7 +76,6 @@ public class TestPlanificacion {
 		System.out.println("\t"+admP.getListo());// Compruebo
 		admP.deslistarProcesoFIFO();
 		System.out.println("\t"+admP.getListo());// Compruebo
-		
 
 
 	}
