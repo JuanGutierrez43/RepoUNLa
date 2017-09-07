@@ -36,10 +36,23 @@ public class Tabla {
 		this.estado = estado;
 	}
 
-
 	@Override
 	public String toString() {
 		return getEstado().toString();
 	}
-	
+
+	public boolean equals(String estado) {
+		if (getEstado().equals(estado))
+			return true;
+		return false;
+	}
+
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + columna;
+		result = prime * result + ((estado == null) ? 0 : estado.hashCode());
+		result = prime * result + fila;
+		return result;
+	}
 }
