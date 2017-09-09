@@ -211,6 +211,7 @@ public class admProcesamiento {
 		// no es necesario
 		/*-------------- traerAlgoritmoFIFO ------------*/
 		String string = toString(planificarFIFO(lstProcesosListo, lstProcesosListo2, auxTabla));
+		string+="\n"+mostrarLstProceso();
 		return string;
 	}
 
@@ -242,9 +243,7 @@ public class admProcesamiento {
 					}
 					/* reviso si CPU esta en uso y cual proceso ejecuta */
 					if (getHilo().isEjecutando() && getHilo().getProceso().equal(fila + 1)) {
-
 						boolean ejecutando = getHilo().ejecutarInstrucción();
-
 						if (ejecutando && getHilo().getProceso().getDuracion().getiCPU() >= 0) {
 							// System.out.println("\t"+getHilo());// Compruebo
 							auxTabla[fila][columna].setEstado("E");
@@ -292,13 +291,9 @@ public class admProcesamiento {
 
 		} // fin si final(lstProcesosListo está vacía)
 
-		// getBuffers().getLstProcesos().removeAll(lstProcesosListo2);
-		// System.out.println(getBuffers());
-		// System.out.println(lstProcesosListo2);
 		/*-------------- segunda pasada ------------*/
 		if (!lstProcesosListo2.isEmpty()) {
 			// corrige errores de comienzo de tiempo
-
 			for (Proceso p : lstProcesosListo2) {
 				/* listar procesos a la lstProcesos */
 				listarProcesoFIFO(p);
@@ -310,7 +305,6 @@ public class admProcesamiento {
 					if (auxTabla[getHilo().getProceso().getIdProceso() - 1][finale - 1].equals("B")) {
 						for (int j2 = finale - 1; j2 < getCantidaColumnas(); j2++) {
 							if (auxTabla[getHilo().getProceso().getIdProceso() - 1][j2].equals("B")) {
-								System.out.println(j2);
 								finale++;
 							}
 						}
