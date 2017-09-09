@@ -36,6 +36,12 @@ public class Buffers {
 
 	/*------------------------------------------------------*/
 	// Metodos
+	public boolean bloquearProceso(Proceso proceso) {
+		boolean validate = false;
+		validate = getLstProcesos().add(proceso);
+		return validate;
+	}
+	
 	public Proceso traerProceso(int idProceso) {
 		Proceso procesoAux = null;
 		int i = 0;

@@ -73,7 +73,7 @@ public class Proceso {
 	public String toString() {
 		return "Proceso="+getProceso()
 				+ ", Tiempo Comienza=" + getComienzaTiempo() 
-				+ ", Duracion=" + getDuracion()
+				+ ", Duración=" + getDuracion()
 				+ ", Prioridad=" + getPrioridad()
 				;
 	}

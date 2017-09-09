@@ -2,7 +2,6 @@ package Model;
 
 public class Duracion {
 
-
 	private int iCPU;
 	private int EyS;
 	private int fCPU;
@@ -18,6 +17,7 @@ public class Duracion {
 		this.EyS = 0;
 		this.fCPU = 0;
 	}
+
 	public int getiCPU() {
 		return iCPU;
 	}
@@ -44,10 +44,7 @@ public class Duracion {
 
 	@Override
 	public String toString() {
-		return "[CPU=" + getiCPU()
-				+ ", E/S=" + getEyS()
-				+ ", CPU=" + getfCPU() 
-				+ "]";
+		return "[CPU=" + getiCPU() + ", E/S=" + getEyS() + ", CPU=" + getfCPU() + "]";
 	}
 
 }

@@ -36,7 +36,20 @@ public class Hilo {
 		this.proceso = proceso;
 	}
 
-	// métodos
+	/*------------------------------------------------------*/
+	// Métodos
+	public boolean ejecutarProceso(Proceso proceso) {
+		boolean validate = false;
+		if (!isEjecutando()) {
+			setProceso(proceso);
+		}
+		if (getProceso().equals(proceso)) {
+			setEjecutando(true);
+			validate = true;
+		}
+		return validate;
+	}
+	
 	public boolean ejecutarInstrucción() {
 		boolean ejecutado = false;
 		int tiempo = getProceso().getDuracion().getiCPU();
