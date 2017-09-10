@@ -40,42 +40,37 @@ public class Listo {
 			while (i < lenD) {
 				if (getLstProcesos().get(i).equal(idProceso)) {
 					procesoAux = getLstProcesos().get(i);
-					i=lenD;
+					i = lenD;
 				}
 				i++;
 			}
 		}
 		return procesoAux;
 	}
-	
-	public boolean listarProceso(Proceso proceso){
+
+	public boolean listarProceso(Proceso proceso) {
 		boolean agregar = false;
-		agregar=getLstProcesos().add(proceso);
+		agregar = getLstProcesos().add(proceso);
 		return agregar;
 	}
-	
+
 	public Proceso deslistarProceso(int idProceso) {
 		Proceso procesoAux = null;
-		
-		//vacio
-		System.out.println(traerProceso(idProceso));
-		
-		if(!traerProceso(idProceso).equal(null)){
-			procesoAux=traerProceso(idProceso);
-			
-			int i=0;
+		if (!traerProceso(idProceso).equal(null)) {
+			procesoAux = traerProceso(idProceso);
+			int i = 0;
 			int lenD = getLstProcesos().size();
 			while (i < lenD) {
-				if (traerProceso(i+1).equals(idProceso)) {
+				if (traerProceso(i + 1).equals(idProceso)) {
 					getLstProcesos().remove(i);
-					i=lenD;
+					i = lenD;
 				}
 				i++;
 			}
 		}
 		return procesoAux;
 	}
-	
+
 	@Override
 	public String toString() {
 		String string = "IdListo=" + getIdListo();

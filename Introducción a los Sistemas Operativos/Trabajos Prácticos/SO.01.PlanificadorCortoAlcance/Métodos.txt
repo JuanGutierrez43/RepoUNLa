@@ -5,10 +5,11 @@ listarProcesosFIFO(Proceso proceso)
 -> traerProceso(int idProceso)
 -> listarProceso(Proceso proceso)
 -> deslistarProceso(int idProceso)
+-> ordenarPrioridad() ¡nuevo
 deslistarProcesoFIFO()
 
 ejecutarProceso(Proceso proceso)
--> ejecutarProceso(Proceso proceso); ¡nuevo
+-> ejecutarProceso(Proceso proceso) ¡nuevo
 -> ejecutarInstrucción()
 -> eliminarProceso()
 terminarProceso()
@@ -21,5 +22,9 @@ bloquearProceso(Proceso proceso)
 desbloquearProceso(int idProceso)
 
 mostrarAlgoritmoFIFO()
-planificarFIFO(List<Proceso> lstProcesosListo, Tabla[][] auxTabla)
+-> planificarFIFO(List<Proceso> lstProcesosListo, Tabla[][] auxTabla)
+
+¡nuevo
+mostrarAlgoritmoPrioridad()
+-> 
 

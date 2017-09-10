@@ -283,7 +283,7 @@ public class admProcesamiento {
 				} // fin for (fila)
 			} // fin for (columna)
 		} // fin si final(lstProcesosListo está vacía)
-			// Carga a la matriz los estados E y T
+		// Carga a la matriz los estados E y T
 		/*-------------- segunda pasada ------------*/
 		if (!lstProcesosListo2.isEmpty()) {
 			// corrige errores de comienzo de tiempo
@@ -292,10 +292,12 @@ public class admProcesamiento {
 				listarProcesoFIFO(p);
 				/* cargar a CPU */
 				ejecutarProceso(deslistarProcesoFIFO());
-				/* reviso si CPU esta en uso y comienza a escribir la tabla */
+				/* el CPU está en uso y comienza a escribir la tabla */
 				int duracion = getHilo().getProceso().getDuracion().getfCPU();
+				
 				for (int j = 0; j < duracion; j++) {
 					if (auxTabla[getHilo().getProceso().getIdProceso() - 1][finale - 1].equals("B")) {
+						// Por cada bloqueado adelanto 1 para ejecutar instrucciones de proceso 
 						for (int j2 = finale - 1; j2 < getCantidaColumnas(); j2++) {
 							if (auxTabla[getHilo().getProceso().getIdProceso() - 1][j2].equals("B")) {
 								finale++;
