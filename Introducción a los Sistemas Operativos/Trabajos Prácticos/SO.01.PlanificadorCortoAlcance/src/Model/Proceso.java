@@ -71,9 +71,9 @@ public class Proceso {
 	
 	@Override
 	public String toString() {
-		return "Proceso="+getProceso()
+		return "Proceso=" + getProceso()
 				+ ", Tiempo Comienza=" + getComienzaTiempo() 
-				+ ", Duracion=" + getDuracion()
+				+ ", Duración=" + getDuracion()
 				+ ", Prioridad=" + getPrioridad()
 				;
 	}

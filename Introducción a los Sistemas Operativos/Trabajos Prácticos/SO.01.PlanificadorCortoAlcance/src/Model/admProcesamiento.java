@@ -126,13 +126,7 @@ public class admProcesamiento {
 	// Ejecutar
 	public boolean ejecutarProceso(Proceso proceso) {
 		boolean validate = false;
-		if (!getHilo().isEjecutando()) {
-			getHilo().setProceso(proceso);
-		}
-		if (getHilo().getProceso().equals(proceso)) {
-			getHilo().setEjecutando(true);
-			validate = true;
-		}
+		validate = getHilo().ejecutarProceso(proceso); //mejoras
 		return validate;
 	}
 
@@ -147,7 +141,7 @@ public class admProcesamiento {
 	// Bloquear
 	public boolean bloquearProceso(Proceso proceso) {
 		boolean validate = false;
-		validate = getBuffers().getLstProcesos().add(proceso);
+		validate = getBuffers().bloquearProceso(proceso);
 		return validate;
 	}
 
@@ -172,12 +166,8 @@ public class admProcesamiento {
 		// sale el primero
 		if (!getListo().getLstProcesos().isEmpty()) {
 			// procesoAux = getListo().deslistarProceso(1);
-			// no porque no saco por ide sino por index
-			procesoAux = new Proceso(getListo().getLstProcesos().get(0).getIdProceso(),
-					getListo().getLstProcesos().get(0).getProceso(),
-					getListo().getLstProcesos().get(0).getComienzaTiempo(),
-					getListo().getLstProcesos().get(0).getPrioridad(),
-					getListo().getLstProcesos().get(0).getDuracion());
+			// no porque no saco por id sino por index
+			procesoAux = getListo().getLstProcesos().get(0); // mejoras
 			getListo().getLstProcesos().remove(0);
 		}
 		return procesoAux;
@@ -197,32 +187,36 @@ public class admProcesamiento {
 	public String mostrarAlgoritmoFIFO() {
 
 		List<Proceso> lstProcesosListo = new ArrayList<Proceso>();
-		List<Proceso> lstProcesosListo2 = new ArrayList<Proceso>();
 		Tabla[][] auxTabla = new Tabla[getCantidadFilas()][getCantidaColumnas()];
+		String string = "";
+		/*-------------- Respaldo Datos Originales ------------*/
 		// clono la lista original a lstProcesosListo (revisado)
 		for (Proceso proceso : getLstProcesos()) { // inicializo Lista nueva
-			Proceso auxProceso1 = new Proceso(proceso.getIdProceso(), proceso.getProceso(), proceso.getComienzaTiempo(),
-					proceso.getPrioridad(), new Duracion(proceso.getDuracion().getiCPU(),
-							proceso.getDuracion().getEyS(), proceso.getDuracion().getfCPU()));
+			Proceso auxProceso1 = new Proceso(proceso.getIdProceso(), proceso.getProceso(), proceso.getComienzaTiempo(),proceso.getPrioridad(),
+								  new Duracion(proceso.getDuracion().getiCPU(),proceso.getDuracion().getEyS(), proceso.getDuracion().getfCPU()));
 			lstProcesosListo.add(auxProceso1);
 		}
-		setTabla(auxTabla, getTabla()); // inicializo tabla nueva
+		setTabla(auxTabla, getTabla()); // inicializar tabla nueva
 		/*-------------- Recupero Datos Originales ------------*/
 		// no es necesario
-		/*-------------- traerAlgoritmoFIFO ------------*/
-		String string = toString(planificarFIFO(lstProcesosListo, lstProcesosListo2, auxTabla));
-		string+="\n"+mostrarLstProceso();
+		/*-------------- traer Algoritmo FIFO ------------*/
+		string += "Algoritmo FIFO" ;
+		string += "\n" +toString(planificarFIFO(lstProcesosListo, auxTabla));
+		string += "\n" + mostrarLstProceso();
+		string += "\n-> hay 1 procesador" ;
+		string += "\n-> E/S Se realiza en paralelo" ;
+		
 		return string;
 	}
 
-	public Tabla[][] planificarFIFO(List<Proceso> lstProcesosListo, List<Proceso> lstProcesosListo2,
-			Tabla[][] auxTabla) {
+	public Tabla[][] planificarFIFO(List<Proceso> lstProcesosListo, Tabla[][] auxTabla) {
+		List<Proceso> lstProcesosListo2 = new ArrayList<Proceso>();
 		int finale = 0;
 		/*-------------- Inicio FIFO------------*/
 		// preparo el hilo
 		getHilo().setEjecutando(false);
 		// inicializo Estado listo
-		// Carga a la matriz los estados
+		// Carga a la matriz los estados E y B
 		/*-------------- primera pasada ------------*/
 		if (!lstProcesosListo.isEmpty()) {
 			/* por toda la tabla agrego los estados */
@@ -254,7 +248,7 @@ public class admProcesamiento {
 								// System.out.println(fila+" "+columna);
 								if (getHilo().getProceso().getDuracion().getiCPU() == -1) {
 									bloquearProceso(terminarProceso());
-									// me guardo posicion para 2da pasada
+									// me guardo posicion final para 2da pasada
 									finale = columna + 1;
 								}
 							}
@@ -286,11 +280,10 @@ public class admProcesamiento {
 							}
 						}
 					}
-				} // fin for (k)
-			} // fin for (i)
-
+				} // fin for (fila)
+			} // fin for (columna)
 		} // fin si final(lstProcesosListo está vacía)
-
+		// Carga a la matriz los estados E y T
 		/*-------------- segunda pasada ------------*/
 		if (!lstProcesosListo2.isEmpty()) {
 			// corrige errores de comienzo de tiempo
@@ -299,10 +292,12 @@ public class admProcesamiento {
 				listarProcesoFIFO(p);
 				/* cargar a CPU */
 				ejecutarProceso(deslistarProcesoFIFO());
-				/* reviso si CPU esta en uso y comienza a escribir la tabla */
+				/* el CPU está en uso y comienza a escribir la tabla */
 				int duracion = getHilo().getProceso().getDuracion().getfCPU();
+				
 				for (int j = 0; j < duracion; j++) {
 					if (auxTabla[getHilo().getProceso().getIdProceso() - 1][finale - 1].equals("B")) {
+						// Por cada bloqueado adelanto 1 para ejecutar instrucciones de proceso 
 						for (int j2 = finale - 1; j2 < getCantidaColumnas(); j2++) {
 							if (auxTabla[getHilo().getProceso().getIdProceso() - 1][j2].equals("B")) {
 								finale++;

@@ -36,6 +36,12 @@ public class Buffers {
 
 	/*------------------------------------------------------*/
 	// Metodos
+	public boolean bloquearProceso(Proceso proceso) {
+		boolean validate = false;
+		validate = getLstProcesos().add(proceso);
+		return validate;
+	}
+
 	public Proceso traerProceso(int idProceso) {
 		Proceso procesoAux = null;
 		int i = 0;
@@ -59,7 +65,6 @@ public class Buffers {
 		int tiempo = 0;
 		if (!traerProceso(idProceso).equals(null)) {
 			procesoAux = traerProceso(idProceso);
-
 			tiempo = procesoAux.getDuracion().getEyS();
 			if (tiempo >= 0) {
 				procesoAux.getDuracion().setEyS(tiempo - 1);

@@ -1,27 +1,30 @@
-agregarProceso()
-traerProceso()
+agregarProceso(String proceso, int comienzaTiempo, int iCPU, int eyS, int fCPU,Prioridad prioridad)
+traerProceso(int index)
 
-listarProcesosFIFO()
--> listarProceso
--> deslistarProceso
+listarProcesosFIFO(Proceso proceso)
+-> traerProceso(int idProceso)
+-> listarProceso(Proceso proceso)
+-> deslistarProceso(int idProceso)
+-> ordenarPrioridad() ¡nuevo
 deslistarProcesoFIFO()
 
-ejecutarProceso()
+ejecutarProceso(Proceso proceso)
+-> ejecutarProceso(Proceso proceso) ¡nuevo
 -> ejecutarInstrucción()
 -> eliminarProceso()
 terminarProceso()
 
-bloquearProceso()
--> traerProceso()
--> ejecutarE/S()
--> eliminarBloqueado()
-desbloquearProceso()
+bloquearProceso(Proceso proceso)
+-> bloquearProceso(Proceso proceso) ¡nuevo
+-> traerProceso(int idProceso)
+-> ejecutarE/S(int idProceso)
+-> eliminarBloqueado(int idProceso)
+desbloquearProceso(int idProceso)
 
 mostrarAlgoritmoFIFO()
-planificarFIFO()
+-> planificarFIFO(List<Proceso> lstProcesosListo, Tabla[][] auxTabla)
 
-
-
-
-
+¡nuevo
+mostrarAlgoritmoPrioridad()
+-> 
 
