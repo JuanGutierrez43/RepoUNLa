@@ -40,10 +40,8 @@ public class Hilo {
 	// Métodos
 	public boolean ejecutarProceso(Proceso proceso) {
 		boolean validate = false;
-		if (!isEjecutando()) {
+		if (!isEjecutando()) { // mejorado
 			setProceso(proceso);
-		}
-		if (getProceso().equals(proceso)) {
 			setEjecutando(true);
 			validate = true;
 		}

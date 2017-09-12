@@ -25,13 +25,15 @@ public class TestFIFO {
 		// agregarProceso(String proceso, int comienzaTiempo, int iCPU, int eyS, int fCPU,Prioridad prioridad)
 		admP.agregarProceso("P1", 1, 3, 1, 4, Prioridad.Media);
 		admP.agregarProceso("P2", 2, 2, 3, 2, Prioridad.Baja);
-		admP.agregarProceso("P3", 4, 4, 21, 5, Prioridad.Alta);
+		admP.agregarProceso("P3", 3, 4, 21, 5, Prioridad.Alta);
 		admP.agregarProceso("P4", 6, 1, 10, 1, Prioridad.Media);
 		admP.agregarProceso("P5", 7, 4, 5, 5, Prioridad.Alta);
 		admP.agregarProceso("P6", 8, 1, 3, 1, Prioridad.Media);
 
 		//mostrarAlgoritmoFIFO() politica que ordena de acuerdo al orden de llegada
 		System.out.println(admP.mostrarAlgoritmoFIFO());
+		System.out.println("-----------Creando-----------");
+		System.out.println(admP.mostrarAlgoritmoPrioridad());
 	}
 
 }
