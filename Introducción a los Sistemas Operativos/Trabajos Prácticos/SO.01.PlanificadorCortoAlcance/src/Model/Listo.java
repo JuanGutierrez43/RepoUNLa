@@ -3,6 +3,8 @@ package Model;
 import java.util.ArrayList;
 import java.util.List;
 
+import Model.Proceso.Prioridad;
+
 public class Listo {
 
 	private int idListo;
@@ -69,6 +71,46 @@ public class Listo {
 			}
 		}
 		return procesoAux;
+	}
+
+	public boolean ordenarPrioridad() {
+		boolean orden = false;
+		List<Proceso> lstProcesosAux = new ArrayList<Proceso>();
+		int i = 0;
+		// ordenar contando las prioridades Nuevo¡¡¡
+		int contAlta = 0;
+		int contMedia = 0;
+		int contBaja = 0;
+		int lenD = getLstProcesos().size();
+		//ordeno lista
+		while (i < lenD) {
+			if (getLstProcesos().get(i).getPrioridad().equals(Prioridad.Alta)) {
+				if (lstProcesosAux.isEmpty()) {
+					lstProcesosAux.add(getLstProcesos().get(i));
+					contAlta++;
+				} else {
+					lstProcesosAux.add(contAlta, getLstProcesos().get(i));
+					contAlta++;
+				}
+			}
+			if (getLstProcesos().get(i).getPrioridad().equals(Prioridad.Media)) {
+				if (lstProcesosAux.isEmpty()) {
+					lstProcesosAux.add(getLstProcesos().get(i));
+					contMedia++;
+				} else {
+					lstProcesosAux.add(contAlta+contMedia, getLstProcesos().get(i));
+					contMedia++;
+				}
+			}
+			if (getLstProcesos().get(i).getPrioridad().equals(Prioridad.Baja)) {
+				lstProcesosAux.add(getLstProcesos().get(i));	
+			}
+			// siguiente
+			i++;
+		}// termino y guardo lista ordenada por prioridad
+		getLstProcesos().removeAll(lstProcesos);
+		setLstProcesos(lstProcesosAux);
+		return orden;
 	}
 
 	@Override
