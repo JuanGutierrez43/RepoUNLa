@@ -1,0 +1,41 @@
+-----------Creando-----------
+Test 1: Proceso=P1, Tiempo Comienza=1, Duracion=[CPU=3, E/S=2, CPU=4], Prioridad=Media
+	IdHilo=1, Ejecutando=false, Proceso=[null]
+	IdBuffers=1, LstProcesos=[null]
+-----------Ejecutando-----------
+Test 2: true
+	IdHilo=1, Ejecutando=true, Proceso=[Proceso=P1, Tiempo Comienza=1, Duracion=[CPU=3, E/S=2, CPU=4], Prioridad=Media]
+	IdHilo=1, Ejecutando=true, Proceso=[Proceso=P1, Tiempo Comienza=1, Duracion=[CPU=-1, E/S=2, CPU=-1], Prioridad=Media] -> Ejecutado
+Test 3: Proceso=P1, Tiempo Comienza=1, Duracion=[CPU=-1, E/S=2, CPU=-1], Prioridad=Media Terminado
+	IdHilo=1, Ejecutando=false, Proceso=[null]
+-----------Bloqueado-----------
+Test 4: true
+	true
+	IdBuffers=1, LstProcesos=[
+	Proceso=P1, Tiempo Comienza=1, Duracion=[CPU=-1, E/S=2, CPU=-1], Prioridad=Media
+	Proceso=P2, Tiempo Comienza=2, Duracion=[CPU=2, E/S=3, CPU=2], Prioridad=Baja]
+Test 5: true Ejecutando E/S
+	IdBuffers=1, LstProcesos=[
+	Proceso=P1, Tiempo Comienza=1, Duracion=[CPU=-1, E/S=1, CPU=-1], Prioridad=Media
+	Proceso=P2, Tiempo Comienza=2, Duracion=[CPU=2, E/S=3, CPU=2], Prioridad=Baja]
+Test 5: true Ejecutando E/S
+	IdBuffers=1, LstProcesos=[
+	Proceso=P1, Tiempo Comienza=1, Duracion=[CPU=-1, E/S=0, CPU=-1], Prioridad=Media
+	Proceso=P2, Tiempo Comienza=2, Duracion=[CPU=2, E/S=3, CPU=2], Prioridad=Baja]
+Test 5: true Ejecutando E/S
+	IdBuffers=1, LstProcesos=[
+	Proceso=P1, Tiempo Comienza=1, Duracion=[CPU=-1, E/S=-1, CPU=-1], Prioridad=Media
+	Proceso=P2, Tiempo Comienza=2, Duracion=[CPU=2, E/S=3, CPU=2], Prioridad=Baja]
+Test 6: Proceso=P1, Tiempo Comienza=1, Duracion=[CPU=-1, E/S=-1, CPU=-1], Prioridad=Media Eliminado
+	IdBuffers=1, LstProcesos=[
+	Proceso=P2, Tiempo Comienza=2, Duracion=[CPU=2, E/S=3, CPU=2], Prioridad=Baja]
+-----------Listo-----------
+Test 7: true
+	true
+	IdListo=1, LstProcesos=[
+	Proceso=P1, Tiempo Comienza=1, Duracion=[CPU=-1, E/S=-1, CPU=-1], Prioridad=Media
+	Proceso=P2, Tiempo Comienza=2, Duracion=[CPU=2, E/S=3, CPU=2], Prioridad=Baja]
+Test 8: Proceso=P1, Tiempo Comienza=1, Duracion=[CPU=-1, E/S=-1, CPU=-1], Prioridad=Media Ejecutando
+	IdListo=1, LstProcesos=[
+	Proceso=P2, Tiempo Comienza=2, Duracion=[CPU=2, E/S=3, CPU=2], Prioridad=Baja]
+	IdListo=1, LstProcesos=[null]
