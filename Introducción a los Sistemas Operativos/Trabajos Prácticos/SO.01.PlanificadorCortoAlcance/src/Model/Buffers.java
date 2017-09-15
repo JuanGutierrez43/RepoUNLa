@@ -60,15 +60,15 @@ public class Buffers {
 	}
 
 	public boolean ejecutarEyS(int idProceso) {
-		boolean ejecutado = false;
-		Proceso procesoAux = null;
+		boolean ejecutado = true;
+		Proceso procesoAux = traerProceso(idProceso);
 		int tiempo = 0;
-		if (!traerProceso(idProceso).equals(null)) {
-			procesoAux = traerProceso(idProceso);
+		if (!procesoAux.equals(null)) {
 			tiempo = procesoAux.getDuracion().getEyS();
 			if (tiempo >= 0) {
 				procesoAux.getDuracion().setEyS(tiempo - 1);
-				ejecutado = true;
+			}else{
+				ejecutado = false;
 			}
 		}
 		return ejecutado;
