@@ -94,7 +94,6 @@ private static void debug() {
   public static void main(String[] args) {
     int i = 0;
 
- // cambios
 //    if (args.length != 1) {
 //      System.out.println("Usage: 'java Scheduling <INIT FILE>'");
 //      //System.exit(-1);

@@ -80,27 +80,24 @@ public class Listo {
 		// ordenar contando las prioridades Nuevo¡¡¡
 		int contAlta = 0;
 		int contMedia = 0;
-		int contBaja = 0;
 		int lenD = getLstProcesos().size();
 		//ordeno lista
 		while (i < lenD) {
 			if (getLstProcesos().get(i).getPrioridad().equals(Prioridad.Alta)) {
 				if (lstProcesosAux.isEmpty()) {
 					lstProcesosAux.add(getLstProcesos().get(i));
-					contAlta++;
 				} else {
 					lstProcesosAux.add(contAlta, getLstProcesos().get(i));
-					contAlta++;
 				}
+				contAlta++;
 			}
 			if (getLstProcesos().get(i).getPrioridad().equals(Prioridad.Media)) {
 				if (lstProcesosAux.isEmpty()) {
 					lstProcesosAux.add(getLstProcesos().get(i));
-					contMedia++;
 				} else {
 					lstProcesosAux.add(contAlta+contMedia, getLstProcesos().get(i));
-					contMedia++;
 				}
+				contMedia++;
 			}
 			if (getLstProcesos().get(i).getPrioridad().equals(Prioridad.Baja)) {
 				lstProcesosAux.add(getLstProcesos().get(i));	
