@@ -17,7 +17,10 @@ public class TestFIFO {
 
 	public static void main(String[] args) {
 
-		// admProcesamiento(int cantidadFilas, int cantidaColumnas)
+		//*****************************************************************************
+		//-Prueba numero 1 del algoritmo FIFO
+		
+		//admProcesamiento(int cantidadFilas, int cantidaColumnas)
 		admProcesamiento admP = new admProcesamiento(20, 40);
 
 		System.out.println("-----------Creando-----------");
@@ -33,11 +36,12 @@ public class TestFIFO {
 		//mostrarAlgoritmoFIFO() politica que ordena de acuerdo al orden de llegada
 		System.out.println(admP.mostrarAlgoritmoFIFO());
 		
+		//*****************************************************************************
 		//-Prueba numero 2 del algoritmo FIFO
 		admProcesamiento admP2 = new admProcesamiento (8, 50);
 		System.out.println("/-----------Creando 2-----------");
 
-		// agregarProceso(String proceso, int comienzaTiempo, int iCPU, int eyS, int fCPU,Prioridad prioridad)
+		//agregarProceso:
 		admP2.agregarProceso("P1", 1, 1, 3, 2, Prioridad.Alta);
 		admP2.agregarProceso("P2", 1, 5, 2, 4, Prioridad.Baja);
 		admP2.agregarProceso("P3", 2, 4, 1, 6, Prioridad.Alta);
@@ -47,11 +51,28 @@ public class TestFIFO {
 		admP2.agregarProceso("P6", 6, 4, 3, 1, Prioridad.Media);
 		admP2.agregarProceso("P8", 8, 2, 5, 1, Prioridad.Baja);
 		
-	
-
-		//mostrarAlgoritmoFIFO() politica que ordena de acuerdo al orden de llegada
+		//mostrarAlgoritmoFIFO():
 		System.out.println(admP2.mostrarAlgoritmoFIFO());
 
+		//*****************************************************************************
+		//-Prueba numero 3 del algoritmo FIFO
+		admProcesamiento admP3 = new admProcesamiento (8, 50);
+		System.out.println("/-----------Creando 3-----------");
+
+		//agregarProceso:
+		admP3.agregarProceso("P1", 1, 4, 2, 3, Prioridad.Alta);
+		admP3.agregarProceso("P2", 1, 3, 4, 3, Prioridad.Baja);
+		admP3.agregarProceso("P3", 2, 2, 2, 6, Prioridad.Alta);
+		admP3.agregarProceso("P4", 3, 1, 3, 2, Prioridad.Media);
+		admP3.agregarProceso("P5", 4, 1, 1, 5, Prioridad.Media);
+		admP3.agregarProceso("P6", 5, 4, 1, 3, Prioridad.Baja);
+		admP3.agregarProceso("P6", 5, 5, 2, 1, Prioridad.Media);
+		admP3.agregarProceso("P8", 7, 1, 3, 1, Prioridad.Baja);
+
+
+
+		//mostrarAlgoritmoFIFO():
+		System.out.println(admP3.mostrarAlgoritmoFIFO());
 	}
 
 }
