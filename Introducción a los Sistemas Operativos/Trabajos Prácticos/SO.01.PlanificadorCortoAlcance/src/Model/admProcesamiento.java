@@ -222,9 +222,9 @@ public class admProcesamiento {
 			for (int columna = 0; columna < getCantidaColumnas(); columna++) {
 				avilitarEyS = true;
 				bloquear = true;
-				for (int fila = 0; fila < procesos.size(); fila++) {
+				if (cont >= 0) {
 					/* listar procesos a la lstProcesos */
-					if (cont >= 0) {
+					for (int fila = 0; fila < procesos.size(); fila++) {
 						if (procesos.get(fila).getComienzaTiempo() == (columna + 1)) {
 							cont--;
 							// guardo proceso a listo
@@ -232,9 +232,13 @@ public class admProcesamiento {
 							// ordeno por prioridad lista de Listos
 							getListo().ordenarPrioridad();
 						}
-					}
-				} // Procesos por fila
+					}// Procesos por fila
+				} 
 
+				/****test de prueba****/
+				 int test2=8;
+
+				 
 				/* reviso si CPU esta libre para agregar un proceso nuevo */
 				if (!getHilo().isEjecutando()) {
 					// sacar un proceso de listo y lo pasar al CPU
@@ -266,6 +270,21 @@ public class admProcesamiento {
 						auxTabla[getHilo().getProceso().getIdProceso() - 1][columna].setEstado("T");
 						terminarProceso(); // elimino el Proceso
 						bloquear = false; // aviso que no bloquee
+						
+						//solucion total porque no entraba otro proceso
+						if (!getHilo().isEjecutando()) {
+							// sacar un proceso de listo y lo pasar al CPU
+							if (!getListo().getLstProcesos().isEmpty()) {
+								ejecutarProceso(deslistarProcesoFIFO());
+								// miestras que la columna anterior no tenga estado bloqueado, entonces (me soluciono todo) :) Revisar a futuro porque me daba error
+								if (columna > 0 && !auxTabla[getHilo().getProceso().getIdProceso() - 1][columna ].equals("B")) {
+									// deshabilitar ejecución de entrada y salido 1 vez por paralelismo
+									avilitarEyS = false;
+									columna--;
+								}
+							}
+						}
+						
 					}
 					if (bloquear) {// no tira error de hilo vacio cuidado con esta parte que puede ser causa errores por la id que traigo que es distinto que el index :) Revisar a futuro porque me daba error
 						if (ejecutando && getHilo().getProceso().getDuracion().getiCPU() == -1 && getHilo().getProceso().getDuracion().getfCPU() == traerProceso(getHilo().getProceso().getIdProceso() - 1).getDuracion().getfCPU()) {
@@ -307,13 +326,14 @@ public class admProcesamiento {
 					}
 				}
 
-				/****test de prueba****/
-				 int test=8;
-				 if (columna == (test-1)) {
-				 System.out.println("\n" + getListo() + " " + (columna + 1));
-				 System.out.println(getHilo());
-				 System.out.println(getBuffers());
-				 }
+
+//				/****test de prueba****/
+//				 int test=8;
+//				 if (columna == (test-1)) {
+//				 System.out.println("\n" + getListo() + " " + (columna + 1));
+//				 System.out.println(getHilo());
+//				 System.out.println(getBuffers());
+//				 }
 
 			} // Fin del tiempo de la tabla
 		}

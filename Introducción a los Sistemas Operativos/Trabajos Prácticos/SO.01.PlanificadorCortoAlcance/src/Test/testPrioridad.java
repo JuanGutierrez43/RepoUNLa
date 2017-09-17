@@ -23,43 +23,37 @@ public class testPrioridad {
 		// mostrarAlgoritmoPrioridad() politica que ordena de acuerdo a la
 		// prioridad
 		System.out.println(admP1.mostrarAlgoritmoPrioridad());
+		System.out.println(admP1.mostrarAlgoritmoFIFO());
 
 		// admProcesamiento(int cantidadFilas, int cantidaColumnas)
 		admProcesamiento admP2 = new admProcesamiento(10, 40);
 
 		System.out.println("-----------Creando-----------");
 
-		// agregarProceso(String proceso, int comienzaTiempo, int iCPU, int eyS,
-		// int fCPU,Prioridad prioridad)
-		// revisar error
+		// agregarProceso(String proceso, int comienzaTiempo, int iCPU, int eyS, int fCPU,Prioridad prioridad)
 		admP2.agregarProceso("P1", 1, 4, 2, 1, Prioridad.Alta);
 		admP2.agregarProceso("P2", 1, 2, 4, 3, Prioridad.Baja);
 		admP2.agregarProceso("P3", 2, 1, 2, 1, Prioridad.Media);
-		admP2.agregarProceso("P4", 2, 3, 1, 2, Prioridad.Media);
+		admP2.agregarProceso("P4", 2, 3, 2, 2, Prioridad.Media);
 		admP2.agregarProceso("P5", 3, 3, 2, 4, Prioridad.Alta);
 
-		// mostrarAlgoritmoPrioridad() politica que ordena de acuerdo a la
-		// prioridad
-//		System.out.println(admP2.mostrarAlgoritmoPrioridad());
-//		System.out.println(admP2.mostrarAlgoritmoFIFO());
-
+		// mostrarAlgoritmoPrioridad() politica que ordena de acuerdo a la prioridad
+		System.out.println(admP2.mostrarAlgoritmoPrioridad());
+		System.out.println(admP2.mostrarAlgoritmoFIFO());
 		
 		// admProcesamiento(int cantidadFilas, int cantidaColumnas)
 		admProcesamiento admP3 = new admProcesamiento(10, 40);
 
 		System.out.println("-----------Creando-----------");
 
-		// agregarProceso(String proceso, int comienzaTiempo, int iCPU, int eyS,
-		// int fCPU,Prioridad prioridad)
-		// revisar error
+		// agregarProceso(String proceso, int comienzaTiempo, int iCPU, int eyS, int fCPU,Prioridad prioridad)
 		admP3.agregarProceso("P1", 1, 4, 2, 1, Prioridad.Baja);
 		admP3.agregarProceso("P2", 1, 2, 4, 3, Prioridad.Media);
 		admP3.agregarProceso("P3", 2, 1, 2, 1, Prioridad.Alta);
 		admP3.agregarProceso("P4", 2, 3, 1, 2, Prioridad.Media);
-		admP3.agregarProceso("P5", 4, 3, 2, 4, Prioridad.Alta);
+		admP3.agregarProceso("P5", 3, 3, 2, 4, Prioridad.Alta);
 
-		// mostrarAlgoritmoPrioridad() politica que ordena de acuerdo a la
-		// prioridad
+		// mostrarAlgoritmoPrioridad() politica que ordena de acuerdo a la prioridad
 		System.out.println(admP3.mostrarAlgoritmoPrioridad());
 	}
 
