@@ -323,12 +323,12 @@ public class admProcesamiento {
 
 
 //				/****test de prueba****/
-				 int test=34;
-				 if (columna == (test-1)) {
-				 System.out.println("\n" + getListo() + " " + (columna + 1));
-				 System.out.println(getHilo());
-				 System.out.println(getBuffers());
-				 }
+//				 int test=34;
+//				 if (columna == (test-1)) {
+//				 System.out.println("\n" + getListo() + " " + (columna + 1));
+//				 System.out.println(getHilo());
+//				 System.out.println(getBuffers());
+//				 }
 
 			} // Fin del tiempo de la tabla
 		}
