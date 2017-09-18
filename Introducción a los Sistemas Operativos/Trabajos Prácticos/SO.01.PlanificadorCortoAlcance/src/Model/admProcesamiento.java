@@ -356,7 +356,7 @@ public class admProcesamiento {
 		string += "\n" + toString(planificarFIFO(lstProcesosListo, auxTabla));
 		string += "\n" + mostrarLstProceso();
 		string += "\n-> hay 1 procesador";
-		string += "\n-> E/S Se realiza en paralelo";
+		string += "\n-> E/S Se realiza en paralelo\n";
 
 		return string;
 	}
