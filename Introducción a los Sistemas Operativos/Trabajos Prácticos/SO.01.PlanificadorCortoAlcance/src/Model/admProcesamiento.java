@@ -233,11 +233,7 @@ public class admProcesamiento {
 							getListo().ordenarPrioridad();
 						}
 					}// Procesos por fila
-				} 
-
-				/****test de prueba****/
-				 int test2=8;
-
+				}
 				 
 				/* reviso si CPU esta libre para agregar un proceso nuevo */
 				if (!getHilo().isEjecutando()) {
@@ -256,6 +252,7 @@ public class admProcesamiento {
 				/* reviso CPU y ejecuto proceso */
 				if (getHilo().isEjecutando()) {
 					boolean ejecutando = getHilo().ejecutarInstrucción();
+					
 					// cargo a la tabla estado E caso 1
 					if (ejecutando && getHilo().getProceso().getDuracion().getiCPU() >= 0) {
 						auxTabla[getHilo().getProceso().getIdProceso() - 1][columna].setEstado("E");
@@ -265,12 +262,16 @@ public class admProcesamiento {
 						auxTabla[getHilo().getProceso().getIdProceso() - 1][columna].setEstado("E");
 					}
 					// paso el proceso a bloqueado o lo Termino
-					if (ejecutando && getHilo().getProceso().getDuracion().getiCPU() == -1
-							&& getHilo().getProceso().getDuracion().getfCPU() == -1) {
+					if (ejecutando && getHilo().getProceso().getDuracion().getiCPU() == -1 && getHilo().getProceso().getDuracion().getfCPU() == -1) {
 						auxTabla[getHilo().getProceso().getIdProceso() - 1][columna].setEstado("T");
 						terminarProceso(); // elimino el Proceso
 						bloquear = false; // aviso que no bloquee
-						
+					}
+					if (bloquear) {// no tira error de hilo vacio cuidado con esta parte que puede ser causa errores por la id que traigo que es distinto que el index :) Revisar a futuro porque me daba error
+						if (ejecutando && getHilo().getProceso().getDuracion().getiCPU() == -1 && getHilo().getProceso().getDuracion().getfCPU() == traerProceso(getHilo().getProceso().getIdProceso() - 1).getDuracion().getfCPU()) {
+							bloquearProceso(terminarProceso());
+						}
+					}else{
 						//solucion total porque no entraba otro proceso
 						if (!getHilo().isEjecutando()) {
 							// sacar un proceso de listo y lo pasar al CPU
@@ -283,12 +284,6 @@ public class admProcesamiento {
 									columna--;
 								}
 							}
-						}
-						
-					}
-					if (bloquear) {// no tira error de hilo vacio cuidado con esta parte que puede ser causa errores por la id que traigo que es distinto que el index :) Revisar a futuro porque me daba error
-						if (ejecutando && getHilo().getProceso().getDuracion().getiCPU() == -1 && getHilo().getProceso().getDuracion().getfCPU() == traerProceso(getHilo().getProceso().getIdProceso() - 1).getDuracion().getfCPU()) {
-							bloquearProceso(terminarProceso());
 						}
 					}
 				}
@@ -328,12 +323,12 @@ public class admProcesamiento {
 
 
 //				/****test de prueba****/
-//				 int test=8;
-//				 if (columna == (test-1)) {
-//				 System.out.println("\n" + getListo() + " " + (columna + 1));
-//				 System.out.println(getHilo());
-//				 System.out.println(getBuffers());
-//				 }
+				 int test=34;
+				 if (columna == (test-1)) {
+				 System.out.println("\n" + getListo() + " " + (columna + 1));
+				 System.out.println(getHilo());
+				 System.out.println(getBuffers());
+				 }
 
 			} // Fin del tiempo de la tabla
 		}

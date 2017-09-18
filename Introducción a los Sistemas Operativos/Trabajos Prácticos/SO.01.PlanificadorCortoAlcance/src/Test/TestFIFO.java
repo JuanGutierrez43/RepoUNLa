@@ -18,7 +18,7 @@ public class TestFIFO {
 	public static void main(String[] args) {
 
 		// admProcesamiento(int cantidadFilas, int cantidaColumnas)
-		admProcesamiento admP = new admProcesamiento(20, 40);
+		admProcesamiento admP = new admProcesamiento(20, 50);
 
 		System.out.println("-----------Creando-----------");
 
@@ -33,7 +33,7 @@ public class TestFIFO {
 		admP.agregarProceso("P8", 10, 2, 1, 1, Prioridad.Alta);
 
 		//mostrarAlgoritmoFIFO() politica que ordena de acuerdo al orden de llegada
-		System.out.println(admP.mostrarAlgoritmoFIFO());
+		//System.out.println(admP.mostrarAlgoritmoFIFO());
 		System.out.println(admP.mostrarAlgoritmoPrioridad());
 		
 		
@@ -48,14 +48,12 @@ public class TestFIFO {
 		admP2.agregarProceso("P4", 3, 5, 1, 1, Prioridad.Media);
 		admP2.agregarProceso("P5", 3, 3, 4, 1, Prioridad.Media);
 		admP2.agregarProceso("P6", 5, 1, 2, 3, Prioridad.Baja);
-		admP2.agregarProceso("P6", 6, 4, 3, 1, Prioridad.Media);
+		admP2.agregarProceso("P7", 6, 4, 3, 1, Prioridad.Media);
 		admP2.agregarProceso("P8", 8, 2, 5, 1, Prioridad.Baja);
-		
-	
 
 		//mostrarAlgoritmoFIFO() politica que ordena de acuerdo al orden de llegada
-		System.out.println(admP2.mostrarAlgoritmoFIFO());
-		System.out.println(admP2.mostrarAlgoritmoPrioridad());
+//		System.out.println(admP2.mostrarAlgoritmoFIFO());
+//		System.out.println(admP2.mostrarAlgoritmoPrioridad());
 		
 
 	}
