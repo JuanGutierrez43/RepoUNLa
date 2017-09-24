@@ -1,2 +1,1 @@
-error:1 Error de tamaño de la tabla corto para procesos largos
-error:2 usar 1 solo hilo
+error:1 usar 1 solo hilo

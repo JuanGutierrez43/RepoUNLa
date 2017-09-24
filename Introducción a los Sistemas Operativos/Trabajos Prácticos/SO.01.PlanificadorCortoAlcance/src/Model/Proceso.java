@@ -1,7 +1,6 @@
 package Model;
 
-public class Proceso {
-
+public class Proceso implements Cloneable {
 
 	private int idProceso;
 	private String proceso;
@@ -16,7 +15,7 @@ public class Proceso {
 		this.prioridad = Prioridad.Baja;
 		this.duracion = new Duracion();
 	}
-	
+
 	public Proceso(int idProceso, String proceso, int comienzaTiempo, Prioridad prioridad, Duracion duracion) {
 		this.idProceso = idProceso;
 		this.proceso = proceso;
@@ -68,35 +67,31 @@ public class Proceso {
 	public enum Prioridad {
 		Baja, Media, Alta
 	};
-	
+
 	@Override
 	public String toString() {
-		return "Proceso=" + getProceso()
-				+ ", Tiempo Comienza=" + getComienzaTiempo() 
-				+ ", Duración=" + getDuracion()
-				+ ", Prioridad=" + getPrioridad()
-				;
+		return "Proceso=" + getProceso() + ", Tiempo Comienza=" + getComienzaTiempo() + ", Duración=" + getDuracion()
+				+ ", Prioridad=" + getPrioridad();
 	}
-	
+
 	public boolean equal(int idProceso) {
-		boolean validate=false;
-		if (getIdProceso()==idProceso){
-			validate=true;
+		boolean validate = false;
+		if (getIdProceso() == idProceso) {
+			validate = true;
 		}
 		return validate;
 	}
 
-	// nuevo
-	public boolean equal(Proceso proceso) {
-		boolean validate=false;
-		if (this.hashCode() == proceso.hashCode()){
-			validate=true;
+	public boolean equal(Proceso proceso) { // Nuevo¡¡¡ 2017
+		boolean validate = false;
+		if (this.hashCode() == proceso.hashCode()) {
+			validate = true;
 		}
 		return validate;
 	}
-	
+
 	@Override
-	public int hashCode() {
+	public int hashCode() { // Nuevo¡¡¡ 2017
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + comienzaTiempo;
@@ -106,5 +101,11 @@ public class Proceso {
 		result = prime * result + ((proceso == null) ? 0 : proceso.hashCode());
 		return result;
 	}
-	
+
+	@Override
+	public Proceso clone() { // Nuevo¡¡¡ 2017
+		return new Proceso(getIdProceso(), getProceso(), getComienzaTiempo(), getPrioridad(),
+			   new Duracion(getDuracion().getiCPU(), getDuracion().getEyS(), getDuracion().getfCPU()));
+	}
+
 }

@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<project name="Mi_Proyecto" default="todo">
+
+
+	<target name="todo" depends="empaqueta, documenta">
+	</target>
+   
+	<target name="empaqueta" depends="compila">
+		<jar destfile="../jar/fichero.jar" includes="../class/**/*.class"/>
+	</target>
+	
+	<target name="compila">
+      <javac srcdir="." destdir="../class"/>
+	</target>
+	
+	<target name="documenta">
+      <javadoc sourcepath="." destfile="../javadoc" packagenames="*"/>
+	</target>
+	
+	<target name="FileCopy">
+	 <copy file="copyfile/test.txt" tofile="destdir/test1.txt"/>
+	</target>
+	
+	<target name="clean">
+		<delete dir="dist"/>
+	</target>
+
+	<target name="compile">
+		<mkdir dir="bin"/>
+		<javac srcdir="src" destdir="bin"/>
+	</target>
+
+	<target name="jar">
+		<mkdir dir="dist"/>
+		<jar destfile="dist/TestPlanificacion.jar" basedir="bin">
+			<manifest>
+				<attribute name="Main_Class" value="Test.TestPlanificacion"/>
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="run">
+		<java jar="dist/TestPlanificacion.jar" fork="true"/>
+	</target>
+	
+</project>

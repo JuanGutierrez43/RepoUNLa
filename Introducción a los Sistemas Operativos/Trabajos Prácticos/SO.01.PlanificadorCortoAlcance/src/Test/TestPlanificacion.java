@@ -40,7 +40,6 @@ public class TestPlanificacion {
 		System.out.println("\t" + admP.getHilo() + " -> Ejecutado");// Compruebo
 
 		// test3
-
 		System.out.println("Test 3: " + admP.terminarProceso() + " Terminado");
 		System.out.println("\t" + admP.getHilo());// Compruebo
 

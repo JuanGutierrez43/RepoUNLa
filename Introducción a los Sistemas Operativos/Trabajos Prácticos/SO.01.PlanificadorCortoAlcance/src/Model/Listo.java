@@ -77,11 +77,10 @@ public class Listo {
 		boolean orden = false;
 		List<Proceso> lstProcesosAux = new ArrayList<Proceso>();
 		int i = 0;
-		// ordenar contando las prioridades Nuevo¡¡¡
 		int contAlta = 0;
 		int contMedia = 0;
 		int lenD = getLstProcesos().size();
-		//ordeno lista
+		// Ordeno lista
 		while (i < lenD) {
 			if (getLstProcesos().get(i).getPrioridad().equals(Prioridad.Alta)) {
 				if (lstProcesosAux.isEmpty()) {
@@ -102,9 +101,9 @@ public class Listo {
 			if (getLstProcesos().get(i).getPrioridad().equals(Prioridad.Baja)) {
 				lstProcesosAux.add(getLstProcesos().get(i));	
 			}
-			// siguiente
+			// Siguiente
 			i++;
-		}// termino y guardo lista ordenada por prioridad
+		}// Termino y guardo lista ordenada por prioridad 
 		getLstProcesos().removeAll(lstProcesos);
 		setLstProcesos(lstProcesosAux);
 		return orden;
