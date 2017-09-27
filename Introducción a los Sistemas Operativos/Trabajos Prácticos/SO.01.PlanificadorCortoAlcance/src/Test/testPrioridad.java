@@ -8,7 +8,7 @@ public class testPrioridad {
 	public static void main(String[] args) {
 
 		// admProcesamiento(int cantidadFilas, int cantidaColumnas)
-		admProcesamiento admP1 = new admProcesamiento(10, 40);
+		admProcesamiento admP1 = new admProcesamiento(10, 50);
 
 		System.out.println("-----------Creando-----------");
 
@@ -23,8 +23,7 @@ public class testPrioridad {
 		// mostrarAlgoritmoPrioridad() politica que ordena de acuerdo a la
 		// prioridad
 		System.out.println(admP1.mostrarAlgoritmoPrioridad());
-		System.out.println(admP1.mostrarAlgoritmoFIFO());
-
+		
 		// admProcesamiento(int cantidadFilas, int cantidaColumnas)
 		admProcesamiento admP2 = new admProcesamiento(10, 40);
 
@@ -39,7 +38,6 @@ public class testPrioridad {
 
 		// mostrarAlgoritmoPrioridad() politica que ordena de acuerdo a la prioridad
 		System.out.println(admP2.mostrarAlgoritmoPrioridad());
-		System.out.println(admP2.mostrarAlgoritmoFIFO());
 		
 		// admProcesamiento(int cantidadFilas, int cantidaColumnas)
 		admProcesamiento admP3 = new admProcesamiento(10, 40);

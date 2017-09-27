@@ -1,3 +1,5 @@
+/**** Metodos ->
+
 agregarProceso(String proceso, int comienzaTiempo, int iCPU, int eyS, int fCPU,Prioridad prioridad)
 traerProceso(int index)
 
@@ -21,10 +23,28 @@ bloquearProceso(Proceso proceso)
 -> eliminarBloqueado(int idProceso)
 desbloquearProceso(int idProceso)
 
+/**** Algoritmos de Procesos ->
+
 mostrarAlgoritmoFIFO()
 -> planificarFIFO(List<Proceso> lstProcesosListo, Tabla[][] auxTabla)
 
-¡nuevo
-mostrarAlgoritmoPrioridad()
--> 
+mostrarAlgoritmoPrioridad() 
+-> planificarPrioridad(List<Proceso> procesos, Tabla[][] auxTabla)
 
+/**** Módulos para los planificadores ->
+
+listarProcesoEntrada(List<Proceso> procesos,int columna)
+listarProcesoBloqueado()
+prosesarProceso()
+ejecutar(Tabla[][] auxTabla,int columna)
+ejecutarEyS(Tabla[][] auxTabla,int columna)
+
+/**** @Override ->
+toString()
+toString(Tabla[][] auxTabla)
+clone(List<Proceso> lstProcesos)
+newTable()
+mostrarLstProceso()
+equals(Object obj)
+hashCode()
+hashCode(Tabla[][] table)
