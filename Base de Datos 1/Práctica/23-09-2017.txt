@@ -1,0 +1,274 @@
+insert into table columm ()
+values ()
+values ()
+values ();
+
+
+
+SQL> insert into departments (department_id,department_name, manager_id, location_id)
+  2  values(71,'Public Relations',100,1700);
+
+1 row created.
+
+SQL>
+
+ERROR at line 1:
+ORA-00001: unique constraint (HR.DEPT_ID_PK) violated
+quiere decir que ya eta cargado
+
+SQL> insert into departments
+  2  values(101,'Finance',NULL,NULL);
+
+1 row created.
+
+SQL> insert into departments(department_id,department_name)
+  2  values(31,'Purchasing');
+
+1 row created.
+
+darle de alta a un emplado
+
+hire_date es la fecha de hoy
+
+SQL> insert into employees (employee_id,first_name, last_name,email,phone_number,hire_date,job_id,salary,commission_pct,manager_id,department_id)
+  2  values (500,'Luis','Popp','LocPOP','515.124.4567',SYSDATE,'AC_ACCOUNT',6900,NULL,205,100);
+
+1 row created.
+
+quiero dar ed alta una fecha
+pasar esta fecha en string a formato de fecha(siendo la mascara de que quiero que de alta
+
+desc table_name
+
+SQL> insert into employees
+  2  values (531,
+  3  'Den','Raphealy'
+  4   ,'DRAPHEALff','515.127.4561',
+  5  TO_DATE('FEB 3,1999','MON DD, YYYY'),
+  6   'AC_ACCOUNT',11000,NULL,100,30);
+
+1 row created.
+
+
+crear un scrip
+
+SQL> insert into departments
+  2  (department_id, department_name,location_id)
+  3  values (&department_id,'&department_name',&location);
+Enter value for department_id: 41
+Enter value for department_name: human resources
+Enter value for location: 2500
+old   3: values (&department_id,'&department_name',&location)
+new   3: values (41,'human resources',2500)
+
+1 row created.
+
+quiero saber e insertar todo lo que cumola la sig condicion
+
+SQL> insert into sales_reps(id,name,salary,commission_pct)
+  2  select employee_id, last_name, salary, commission_pct
+.
+.
+.
+
+foto para saber si no exista la tabla xcx
+
+crear la tabla sales_reps;
+
+
+
+
+.
+.
+.
+.
+
+
+unikey solo si tengo clave compuesta
+forekey 
+
+
+actualizar las tabla de empleados
+
+
+SQL> update employees
+  2  set department_id=70
+  3  where employee_id=113;
+
+1 row updated.
+
+SQL> update copy_emp
+  2  set department_id=110;
+update copy_emp
+       *
+ERROR at line 1:  /***************************
+
+
+actualizarle al empleado x, el mismo puesto de trabajo que tiene x trabador, y que tenga el mnismno salario, pregunto en que trabaja
+y automaticamente trbaja como el otro empleado
+tener cuidado que tiene que trae un solo valor
+
+SQL> update employees
+  2  set job_id=(select job_id
+  3  from employees
+  4  where employee_id=205),
+  5  salary=(select salary
+  6  from employees
+  7  where employee_id=205),
+  8  where employee_id=114;
+where employee_id=114
+*
+ERROR at line 8:
+ORA-01747: invalid user.table.column, table.column, or column specification
+
+-----------------
+
+dar de baja un atabla que cumplan ciertas condiciones, 
+delete me deja la tabla en blanco
+
+SQL> delete from departments
+  2  where department_name = 'Finance';
+delete from departments
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (HR.EMP_DEPT_FK) violated - child record found
+
+-----------
+
+otra forma
+cuando no me acuerdo el nombre del departamento , cuando 
+
+SQL> delete from employees
+  2  where department_id =
+  3  (select department_id
+  4  from departments
+  5  where department_name
+  6  like '%Public%');
+(select department_id
+ *
+ERROR at line 3:
+ORA-01427: single-row subquery returns more than one row
+
+---------------
+
+truncate me remueve todas la filas, y me transforma la tabla vacia
+me da baja toda , quedandome la estructura
+
+
+----------------
+
+en un insert 
+
+SQL> insert into
+  2  (select employee_id, last_name,
+  3  email, hire_date, job_id, salary,
+  4  department_id
+  5  from employees
+  6  where department_id=50)
+  7  values (99999, 'Taylor','DTAYLOR', TO_DATE('07-JUN-99','DD-MON-RR'),
+  8  'ST_CLERK',5000,50);
+
+1 row created.
+
+SQL>
+
+---------------
+
+verificamos si el cuery fue bien echo
+
+
+---------------
+
+
+lenguaje de control que es dcl
+yo puedo decir o busco un commit o un roolbak(atras o commit)o
+
+cuando un commit , en un delete, hace un rollback cuida mis datos
+insert, hasta que haga un commit no esta en la tablaupdate save point, puedo volver para atras
+
+SQL> delete from employees
+  2  where employee_id=99999;
+
+1 row deleted.
+
+SQL> insert into departments
+  2  values (290,'Corporate Tax',NULL,1700);
+
+1 row created.
+
+SQL> commit
+  2  ;
+
+Commit complete.
+
+me guarda todo las actualizaciones
+
+rollback
+
+recupero la informacion que cambie 
+
+SQL> rollback;
+
+Rollback complete.
+
+--------------------------------
+
+entra a la base de datos , se puede conectar otros usarios para modificar y hacer consultas
+
+
+sysdate , no pongo nada es el dia de hoy
+
+
+SQL> create table departameno
+  2  (deptno number(2),
+  3  dname varchar2(14),
+  4  loc varchar2(13),
+  5  create_date date default sysdate);
+
+Table created.
+
+SQL>
+
+fail sistema 
+fisicamente es el lugar donde voy a poner el SO 
+y se rompe un disco, teniendo el 2do disco, 
+y esta afeccato por un virus fmv
+
+
+san o wsn
+
+son los claster de almacenamiento
+
+emc^2
+soporte para almar almacenaineto
+
+nash
+sistema de cajas de almacenai con un ip
+
+bit map
+arbol de acceso a datos mas rapidos
+
+
+
+LONG puedo guardar un archivo de hasta 2gb
+CLOB hasta 4gb
+me sirve para guardar archivos como pdf o video
+
+tambien puedo generar mis propios tipod de datos
+
+
+contrain el dato tiene que exitir y ser valido
+no puedo tener dos registros iguales
+
+modelo relacional
+
+tarea
+leer 4 y 5 forma normal de piattini
+
+procedimiento es un subprograma
+que lo puedo carga usar en cualquier momento
+distinto con los triger
+
+tarea
+4 y 5forma normal
+

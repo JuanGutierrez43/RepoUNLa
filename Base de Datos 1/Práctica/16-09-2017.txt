@@ -1,0 +1,604 @@
+intalar el expres 12 oracle
+C:\oraclexe\app\oracle\product\11.2.0\server\bin
+5 forma normal,
+normalizacion
+referecnia funcionales
+leer componente algebraica muy importante
+
+si existe una lteracion, revisar
+
+un apunte de una persona que es 
+la base de datos resuelve el select
+
+SQL> select department_id, department_name, location_id, city
+  2  from departments
+  3  natural join locations;
+
+
+DEPARTMENT_ID DEPARTMENT_NAME                LOCATION_ID
+------------- ------------------------------ -----------
+CITY
+------------------------------
+           40 Human Resources                       2400
+London
+
+           80 Sales                                 2500
+Oxford
+
+           70 Public Relations                      2700
+Munich
+
+
+....
+SQL> select employees.employee_id, employees.last_name,
+  2  departments.location_id, department_id
+  3  from employees join departments
+  4  using (department_id);
+
+
+EMPLOYEE_ID LAST_NAME                 LOCATION_ID DEPARTMENT_ID
+----------- ------------------------- ----------- -------------
+        200 Whalen                           1700            10
+        201 Hartstein                        1800            20
+        202 Fay                              1800            20
+        114 Raphaely                         1700            30
+        115 Khoo                             1700            30
+        116 Baida                            1700            30
+        117 Tobias                           1700            30
+        118 Himuro                           1700            30
+        119 Colmenares                       1700            30
+        203 Mavris                           2400            40
+        120 Weiss                            1500            50
+....
+
+framewor java debelopert me permite hasta costruir objetos de base de datos 
+
+SQL> select e.employee_id, e.last_name,
+  2  d.location_id, department_id
+  3  from employees e join departments d
+  4  using (department_id)
+  5  ;
+
+EMPLOYEE_ID LAST_NAME                 LOCATION_ID DEPARTMENT_ID
+----------- ------------------------- ----------- -------------
+        200 Whalen                           1700            10
+        201 Hartstein                        1800            20
+        202 Fay                              1800            20
+        114 Raphaely                         1700            30
+        115 Khoo                             1700            30
+        116 Baida                            1700            30
+        117 Tobias                           1700            30
+        118 Himuro                           1700            30
+        119 Colmenares                       1700            30
+        203 Mavris                           2400            40
+        120 Weiss                            1500            50
+....
+
+si no se como se llama entonces hago un on call
+SQL> select e.employee_id, e.last_name, e.department_id,
+  2  d.department_id, d.location_id
+  3  from employees e join departments d
+  4  on (e.department_id=d.department_id)
+  5  ;
+
+EMPLOYEE_ID LAST_NAME                 DEPARTMENT_ID DEPARTMENT_ID LOCATION_ID
+----------- ------------------------- ------------- ------------- -----------
+        200 Whalen                               10            10        1700
+        201 Hartstein                            20            20        1800
+        202 Fay                                  20            20        1800
+        114 Raphaely                             30            30        1700
+        115 Khoo                                 30            30        1700
+        116 Baida                                30            30        1700
+        117 Tobias                               30            30        1700
+        118 Himuro                               30            30        1700
+        119 Colmenares                           30            30        1700
+        203 Mavris                               40            40        2400
+        120 Weiss                                50            50        1500
+
+.....
+
+une en dos campo cuando son distintos
+
+cual es el jefe y su nombre del empleado
+SQL> select e.last_name emp, m.last_name mgr
+  2  from employees e join employees m
+  3  on (e.manager_id=m.employee_id);
+
+EMP                       MGR
+------------------------- -------------------------
+Smith                     Cambrault
+Ozer                      Cambrault
+Kumar                     Cambrault
+Fox                       Cambrault
+Bloom                     Cambrault
+Bates                     Cambrault
+Hunold                    De Haan
+Vishney                   Errazuriz
+Marvins                   Errazuriz
+Lee                       Errazuriz
+Greene                    Errazuriz
+
+.....
+
+SQL> select e.employee_id, e.last_name, e.department_id,
+  2  d.department_id, d.location_id
+  3  from employees e join departments d
+  4  on (e.department_id=d.department_id)
+  5  and e.manager_id = 149;
+
+EMPLOYEE_ID LAST_NAME                 DEPARTMENT_ID DEPARTMENT_ID LOCATION_ID
+----------- ------------------------- ------------- ------------- -----------
+        174 Abel                                 80            80        2500
+        175 Hutton                               80            80        2500
+        179 Johnson                              80            80        2500
+        177 Livingston                           80            80        2500
+        176 Taylor                               80            80        2500
+
+SQL>
+
+.. 
+tomo los empleraod que el manager sera el 149
+puedo tomar a king para saber qu empleados tiene 
+
+lo que se hace todo es join de tablas
+
+
+ ahora quiero unir empleado scon departamento , y que localidades esta cada dep
+me sirve para armar nuestro listado haciendo select
+
+SQL> select employee_id, city, department_name
+  2  from employees e
+  3  join departments d
+  4  on d.department_id = e.department_id
+  5  join locations l
+  6  on d.location_id = l.location_id
+  7  ;
+
+EMPLOYEE_ID CITY                           DEPARTMENT_NAME
+----------- ------------------------------ ------------------------------
+        100 Seattle                        Executive
+        101 Seattle                        Executive
+        102 Seattle                        Executive
+        103 Southlake                      IT
+        104 Southlake                      IT
+        105 Southlake                      IT
+        106 Southlake                      IT
+        107 Southlake                      IT
+        108 Seattle                        Finance
+        109 Seattle                        Finance
+        110 Seattle                        Finance
+
+
+tres camino para join las tablas
+
+cuando no tengo un campo, que no puedo hacer un arteferencia
+join ployees
+
+generear una tabla job_grades
+
+1.174 hacer la tabla, 
+insertar valores, consultar 
+
+SQL> create table job_grades
+  2  (lowest_sal number(10) NOT NULL,
+  3  highest_sal number(10) NOT NULL);
+
+Table created.
+
+SQL>
+
+hacer el 1.175
+
+SQL> insert into job_grades
+  2  (lowest_sal,highest_sal,GRA)values
+  3  (1000,2999,'A');
+
+1 row created.
+
+SQL>
+.....
+SQL> select e.last_name, e.salary, j.gra
+  2  from employees e join job_grades j
+  3  on e.salary
+  4  between j.lowest_sal and j.highest_sal;
+
+
+LAST_NAME                     SALARY
+------------------------- ----------
+GRA
+--------------------------------------------------
+Baida                           2900
+A
+
+Tobias                          2800
+A
+
+Himuro                          2600
+A
+
+******
+
+hace:
+
+SQL> select e.last_name, e.department_id, d.department_name
+  2  from employees e left outer join departments d
+  3  on (e.department_id = d.department_id);
+
+LAST_NAME                 DEPARTMENT_ID DEPARTMENT_NAME
+------------------------- ------------- ------------------------------
+Whalen                               10 Administration
+Fay                                  20 Marketing
+Hartstein                            20 Marketing
+Colmenares                           30 Purchasing
+Himuro                               30 Purchasing
+Tobias                               30 Purchasing
+Baida                                30 Purchasing
+Khoo                                 30 Purchasing
+Raphaely                             30 Purchasing
+Mavris                               40 Human Resources
+Grant                                50 Shipping
+
+
+--------------------
+
+
+SQL> select e.last_name, e.department_id, d.department_name
+  2  from employees e right outer join departments d
+  3  on (e.department_id = d.department_id);
+
+LAST_NAME                 DEPARTMENT_ID DEPARTMENT_NAME
+------------------------- ------------- ------------------------------
+Whalen                               10 Administration
+Fay                                  20 Marketing
+Hartstein                            20 Marketing
+Tobias                               30 Purchasing
+Colmenares                           30 Purchasing
+Baida                                30 Purchasing
+Raphaely                             30 Purchasing
+Khoo                                 30 Purchasing
+Himuro                               30 Purchasing
+Mavris                               40 Human Resources
+Feeney                               50 Shipping
+ 
+,me trae lo que tiene departamentos
+
+......
+
+SQL> select e.last_name, e.department_id, d.department_name
+  2  from employees e full outer join departments d
+  3  on (e.department_id = d.department_id);
+
+LAST_NAME                 DEPARTMENT_ID DEPARTMENT_NAME
+------------------------- ------------- ------------------------------
+King                                 90 Executive
+Kochhar                              90 Executive
+De Haan                              90 Executive
+Hunold                               60 IT
+Ernst                                60 IT
+Austin                               60 IT
+Pataballa                            60 IT
+Lorentz                              60 IT
+Greenberg                           100 Finance
+Faviet                              100 Finance
+Chen                                100 Finance
+
+---
+productos cartesiano entre dos base, con un join, 
+mala practica es hacer esto, mucho cuidadso
+
+SQL> select last_name, department_name
+  2  from employees
+  3  cross join departments;
+
+LAST_NAME                 DEPARTMENT_NAME
+------------------------- ------------------------------
+Abel                      Administration
+Ande                      Administration
+Atkinson                  Administration
+Austin                    Administration
+Baer                      Administration
+Baida                     Administration
+Banda                     Administration
+Bates                     Administration
+Bell                      Administration
+Bernstein                 Administration
+Bissot                    Administration
+
+muchisimos
+2889 rows selected.
+
+
+----------- especial de juan
+SQL> select * from job_grades;
+
+LOWEST_SAL HIGHEST_SAL GRA
+---------- ----------- --------------------------------------------------
+      1000        2999 A
+------------
+
+traer todos los empleados que ganan ma que abel.
+
+
+SQL> select last_name
+  2  from employees
+  3  where salary >
+  4  (select salary
+  5  from employees
+  6  where last_name = 'Abel');
+
+LAST_NAME
+-------------------------
+King
+Kochhar
+De Haan
+Greenberg
+Russell
+Partners
+Errazuriz
+Ozer
+Hartstein
+Higgins
+
+10 rows selected.
+
+SQL>
+
+manejar fechas en muy duro trabajar en base de datos
+
+un valor o qu me traiga mas valores
+
+
+,, trabajar con los comparadores
+> < ==...
+SQL> select last_name, job_id, salary
+  2  from employees
+  3  where job_id =
+  4  (select job_id
+  5  from employees
+  6  where employee_id = 141);
+
+LAST_NAME                 JOB_ID         SALARY
+------------------------- ---------- ----------
+Nayer                     ST_CLERK         3200
+Mikkilineni               ST_CLERK         2700
+Landry                    ST_CLERK         2400
+Markle                    ST_CLERK         2200
+Bissot                    ST_CLERK         3300
+Atkinson                  ST_CLERK         2800
+Marlow                    ST_CLERK         2500
+Olson                     ST_CLERK         2100
+Mallin                    ST_CLERK         3300
+Rogers                    ST_CLERK         2900
+Gee                       ST_CLERK         2400
+
+LAST_NAME                 JOB_ID         SALARY
+------------------------- ---------- ----------
+Philtanker                ST_CLERK         2200
+Ladwig                    ST_CLERK         3600
+Stiles                    ST_CLERK         3200
+Seo                       ST_CLERK         2700
+Patel                     ST_CLERK         2500
+Rajs                      ST_CLERK         3500
+Davies                    ST_CLERK         3100
+Matos                     ST_CLERK         2600
+Vargas                    ST_CLERK         2500
+
+20 rows selected.
+
+//
+traer el minimo salario
+SQL> select last_name, job_id, salary
+  2  from employees
+  3  where salary=
+  4  (select min(salary)
+  5  from employees);
+
+LAST_NAME                 JOB_ID         SALARY
+------------------------- ---------- ----------
+Olson                     ST_CLERK         2100
+
+
+---
+SQL> select department_id, min(salary)
+  2  from employees
+  3   group by department_id
+  4  having min(salary)>
+  5   (select min(salary)
+  6  from employees
+  7   where department_id=50);
+
+DEPARTMENT_ID MIN(SALARY)
+------------- -----------
+          100        6900
+           30        2500
+                     7000
+           90       17000
+           20        6000
+           70       10000
+          110        8300
+           80        6100
+           40        6500
+           60        4200
+           10        4400
+
+11 rows selected.
+
+-- uno que esta mal es:
+
+SQL> select department_id, last_name
+  2  from employees
+  3  where salary=
+  4  (select min(salary)
+  5  from employees
+  6  where last_name = 'haas');
+
+no rows selected
+
+SQL>
+
+-----
+existe usar multiples cosas, de una lista de valores,
+
+SQL> select employee_id, last_name, job_id, salary
+  2  from employees
+  3  where salary<any
+  4  (select salary
+  5  from employees
+  6  where job_id = 'IT_PROG')
+  7  and job_id <> 'IT_PROG';
+
+EMPLOYEE_ID LAST_NAME                 JOB_ID         SALARY
+----------- ------------------------- ---------- ----------
+        132 Olson                     ST_CLERK         2100
+        136 Philtanker                ST_CLERK         2200
+        128 Markle                    ST_CLERK         2200
+        135 Gee                       ST_CLERK         2400
+        127 Landry                    ST_CLERK         2400
+        191 Perkins                   SH_CLERK         2500
+        182 Sullivan                  SH_CLERK         2500
+        144 Vargas                    ST_CLERK         2500
+        140 Patel                     ST_CLERK         2500
+        131 Marlow                    ST_CLERK         2500
+        119 Colmenares                PU_CLERK         2500
+...
+76 rows selected.
+
+--------
+
+
+SQL> select employee_id, last_name, job_id, salary
+  2  from employees
+  3  where salary<all
+  4  (select salary
+  5  from employees
+  6  where job_id = 'IT_PROG')
+  7  and job_id <> 'IT_PROG';
+
+EMPLOYEE_ID LAST_NAME                 JOB_ID         SALARY
+----------- ------------------------- ---------- ----------
+        185 Bull                      SH_CLERK         4100
+        192 Bell                      SH_CLERK         4000
+        193 Everett                   SH_CLERK         3900
+        188 Chung                     SH_CLERK         3800
+        137 Ladwig                    ST_CLERK         3600
+        189 Dilly                     SH_CLERK         3600
+        141 Rajs                      ST_CLERK         3500
+        186 Dellinger                 SH_CLERK         3400
+        133 Mallin                    ST_CLERK         3300
+        129 Bissot                    ST_CLERK         3300
+        180 Taylor                    SH_CLERK         3200
+
+----
+** ahi uno mas que practicar pero no llege
+ver pdf 7.200 aprox
+----
+
+me trae el historial 
+
+SQL> select employee_id, job_id
+  2  from employees
+  3  union
+  4  select employee_id, job_id
+  5  from job_history;
+
+EMPLOYEE_ID JOB_ID
+----------- ----------
+        100 AD_PRES
+        101 AC_ACCOUNT
+        101 AC_MGR
+        101 AD_VP
+        102 AD_VP
+        102 IT_PROG
+        103 IT_PROG
+        104 IT_PROG
+        105 IT_PROG
+        106 IT_PROG
+        107 IT_PROG
+
+115 rows
+
+union all lo que tengo es el duplicado
+
+
+---
+
+---
+
+me busca lo que cambiaron el historia
+SQL> select employee_id, job_id
+  2  from employees
+  3  minus
+  4  select employee_id,job_id
+  5  from job_history;
+
+EMPLOYEE_ID JOB_ID
+----------- ----------
+        100 AD_PRES
+        101 AD_VP
+        102 AD_VP
+        103 IT_PROG
+        104 IT_PROG
+        105 IT_PROG
+        106 IT_PROG
+        107 IT_PROG
+        108 FI_MGR
+        109 FI_ACCOUNT
+        110 FI_ACCOUNT
+
+105 rows selected.
+
+--
+me trae informacion para saber..
+
+SQL> select department_id, TO_NUMBER(null)
+  2  location, hire_date
+  3  from employees
+  4  union
+  5  select department_id,location_id,to_date(null)
+  6  from departments;
+
+DEPARTMENT_ID   LOCATION HIRE_DAT
+------------- ---------- --------
+           10       1700
+           10            17/09/03
+           20       1800
+           20            17/02/04
+           20            17/08/05
+           30       1700
+           30            07/12/02
+           30            18/05/03
+           30            24/07/05
+           30            24/12/05
+           30            15/11/06
+
+130 rows selected.
+
+
+----------------
+
+SQL> select employee_id, job_id,salary
+  2  from employees
+  3  union
+  4  select employee_id,job_id,0
+  5  from job_history;
+
+EMPLOYEE_ID JOB_ID         SALARY
+----------- ---------- ----------
+        100 AD_PRES         24000
+        101 AC_ACCOUNT          0
+        101 AC_MGR              0
+        101 AD_VP           17000
+        102 AD_VP           17000
+        102 IT_PROG             0
+        103 IT_PROG          9000
+        104 IT_PROG          6000
+        105 IT_PROG          4800
+        106 IT_PROG          4800
+        107 IT_PROG          4200
+
+
+
+
+
+
+
