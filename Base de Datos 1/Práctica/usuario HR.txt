@@ -1,0 +1,9 @@
+connect
+ system
+ root
+
+alter user hr account unlock;
+alter user hr identified by hr;
+connect
+ hr
+ hr
