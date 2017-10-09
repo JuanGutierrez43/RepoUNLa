@@ -196,7 +196,7 @@ public class admProcesamiento {
 		if (!procesos.isEmpty()) {
 			// Por toda la tabla agrego los estados 
 			for (int columna = 0; columna < getCantidaColumnas(); columna++) {
-				// Paso proceso a listo de la tabla  
+				// Paso proceso a listo 
 				if (cont >= 0) {
 					if (listarProcesoEntrada(procesos,columna)) {
 						cont--;
@@ -241,13 +241,13 @@ public class admProcesamiento {
 		if (!procesos.isEmpty()) {
 			// Por toda la tabla agrego los estados 
 			for (int columna = 0; columna < getCantidaColumnas(); columna++) {
-				// Paso proceso a listo de la tabla  
+				// Paso proceso a listo
 				if (cont >= 0) {
 					if (listarProcesoEntrada(procesos,columna)) {
 						cont--;
 					}
 				}
-				// Paso de proceso Bloqueado a listo
+				// Paso proceso de Bloqueado a listo
 				listarProcesoBloqueado();
 				// Ordeno por Prioridad
 				getListo().ordenarPrioridad();
@@ -265,7 +265,100 @@ public class admProcesamiento {
 		return auxTabla;
 	}
 
+	public String mostrarAlgoritmoSPN() {
+		String string = "";
+		/*-------------- traer Algoritmo FIFO ------------*/
+		string += "Algoritmo SPN";
+		string += "\n" + toString(planificarSPN(clone(getLstProcesos()), newTable()));
+		string += "\n" + mostrarLstProceso();
+		string += "\n-> hay 1 procesador";
+		string += "\n-> E/S Se realiza en paralelo\n";
+		return string;
+	}
 	
+	private Tabla[][] planificarSPN(List<Proceso> procesos, Tabla[][] auxTabla) {
+		/*-------------- Inicio Planificar Prioridad------------*/
+		// Preparo el hilo 
+		getHilo().setEjecutando(false);
+		// Contador para cargar estado
+		int cont = procesos.size();
+		// Si existen Procesos cargado entonces resuelvo algoritmo 
+		if (!procesos.isEmpty()) {
+			// Por toda la tabla agrego los estados 
+			for (int columna = 0; columna < getCantidaColumnas(); columna++) {
+				// Paso proceso a listo
+				if (cont >= 0) {
+					if (listarProcesoEntrada(procesos,columna)) {
+						cont--;
+					}
+				}
+				// Paso proceso de Bloqueado a listo
+				listarProcesoBloqueado();
+				// Ordeno por Tiempo Total
+				getListo().ordenarTiempoTotal();
+				// Sacar un proceso de listo y lo paso al CPU  
+				prosesarProceso();
+				// Reviso CPU y ejecuto proceso 
+				if (ejecutar(auxTabla,columna)) {
+					prosesarProceso(); // Caso de que se bloquea o termina Proceso anterior paso otro proceso ha estado Ejecutando 
+					ejecutar(auxTabla,columna);
+				}
+				// Las E/S se realiza en paralelo
+				ejecutarEyS(auxTabla,columna);
+			}// Fin del tiempo de la tabla 
+		}
+		return auxTabla;
+	}
+	
+	
+	public String mostrarAlgoritmoPrioridadSPN() {
+		String string = "";
+		/*-------------- traer Algoritmo FIFO ------------*/
+		string += "Algoritmo Prioridad+SPN";
+		string += "\n" + toString(planificarPrioridadSPN(clone(getLstProcesos()), newTable()));
+		string += "\n" + mostrarLstProceso();
+		string += "\n-> hay 1 procesador";
+		string += "\n-> E/S Se realiza en paralelo\n";
+		return string;
+	}
+	
+	
+	private Tabla[][] planificarPrioridadSPN(List<Proceso> procesos, Tabla[][] auxTabla) {
+		/*-------------- Inicio Planificar Prioridad------------*/
+		// Preparo el hilo 
+		getHilo().setEjecutando(false);
+		// Contador para cargar estado
+		int cont = procesos.size();
+		// Si existen Procesos cargado entonces resuelvo algoritmo 
+		if (!procesos.isEmpty()) {
+			// Por toda la tabla agrego los estados 
+			for (int columna = 0; columna < getCantidaColumnas(); columna++) {
+				// Paso proceso a listo
+				if (cont >= 0) {
+					if (listarProcesoEntrada(procesos,columna)) {
+						cont--;
+					}
+				}
+				// Paso proceso de Bloqueado a listo
+				listarProcesoBloqueado();
+				// Ordeno por Tiempo Total
+				getListo().ordenarTiempoTotal();
+				// Ordeno por Prioridad
+				getListo().ordenarPrioridad();
+				
+				// Sacar un proceso de listo y lo paso al CPU  
+				prosesarProceso();
+				// Reviso CPU y ejecuto proceso 
+				if (ejecutar(auxTabla,columna)) {
+					prosesarProceso(); // Caso de que se bloquea o termina Proceso anterior paso otro proceso ha estado Ejecutando 
+					ejecutar(auxTabla,columna);
+				}
+				// Las E/S se realiza en paralelo
+				ejecutarEyS(auxTabla,columna);
+			}// Fin del tiempo de la tabla 
+		}
+		return auxTabla;
+	}
 	// Módulos para los planificadores ->
 	/*------------------------------------------------------*/
 	public boolean listarProcesoEntrada(List<Proceso> procesos,int columna){
