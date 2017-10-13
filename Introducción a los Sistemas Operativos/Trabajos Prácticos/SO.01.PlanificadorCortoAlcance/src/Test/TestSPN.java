@@ -7,7 +7,8 @@ import Model.admProcesamiento;
 public class TestSPN {
 
 	public static void main(String[] args) {
-
+		
+		
 		admProcesamiento admP1 = new admProcesamiento(10, 50);
 		System.out.println("-----------Creando-----------");
 		admP1.agregarProceso("P1", 1, 4, 2, 3, Prioridad.Alta);
