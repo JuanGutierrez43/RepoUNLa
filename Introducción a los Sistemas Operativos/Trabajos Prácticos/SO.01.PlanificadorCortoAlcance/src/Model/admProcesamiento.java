@@ -322,7 +322,6 @@ public class admProcesamiento {
 		return string;
 	}
 	
-	
 	private Tabla[][] planificarPrioridadSPN(List<Proceso> procesos, Tabla[][] auxTabla) {
 		/*-------------- Inicio Planificar Prioridad------------*/
 		// Preparo el hilo 
@@ -359,18 +358,107 @@ public class admProcesamiento {
 		}
 		return auxTabla;
 	}
+	
+	public String mostrarAlgoritmoRoundRobin(int quantum) {
+		String string = "";
+		/*-------------- traer Algoritmo FIFO ------------*/
+		string += "Algoritmo Round-Robin";
+		string += "\n" + toString(planificarRoundRobin(clone(getLstProcesos()), newTable(),quantum));
+		string += "\n" + mostrarLstProceso();
+		string += "\n-> hay 1 procesador";
+		string += "\n-> E/S Se realiza en paralelo\n";
+		return string;
+	}
+	
+	private Tabla[][] planificarRoundRobin(List<Proceso> procesos, Tabla[][] auxTabla,int quantum) {
+		/*-------------- Inicio Planificar Prioridad------------*/
+		// Preparo el hilo 
+		getHilo().setEjecutando(false);
+		// Contador para cargar estado
+		int cont = procesos.size();
+		int cuanto = quantum;
+		
+		// Si existen Procesos cargado entonces resuelvo algoritmo 
+		if (!procesos.isEmpty()) {
+			// Por toda la tabla agrego los estados 
+			for (int columna = 0; columna < getCantidaColumnas(); columna++) {
+				// Paso proceso a listo
+				if (cont >= 0) {
+					if (listarProcesoEntrada(procesos,columna)) {
+						cont--;
+					}
+				}
+				// Paso proceso de Bloqueado a listo
+				listarProcesoBloqueado();
+				// Ordeno no
+				
+				/*********************************************************/
+				// nuevo ¡¡¡
+				// quantum saco un proceso de ejecucion para que entre otro
+				
+				
+				if(cuanto<=0){ // nuevo¡¡¡
+					if (getHilo().isEjecutando()) {
+						
+						boolean end=false;
+						Proceso procesoAux=getHilo().getProceso();
+						
+						int cpuInicio=procesoAux.getDuracion().getiCPU();
+						int cpuFinal=procesoAux.getDuracion().getfCPU();
+						// Se saca proceso de Estado Ejecutando y lo paso según:
+						
+						if (cpuInicio>0) {
+							end=listarProcesoFIFO(terminarProceso()); //recibe true
+						}
+						
+						if (!end) {
+							if (cpuInicio<0 && cpuFinal==traerProceso(getHilo().getProceso().getIdProceso() - 1).getDuracion().getfCPU()) {
+								end=bloquearProceso(terminarProceso()); //recibe true
+							}
+						}
+						
+						if (!end) {
+							if (cpuInicio<0 && cpuFinal>=1) {
+								end=listarProcesoFIFO(terminarProceso()); //recibe true
+							}
+						}
+						
+					}
+					cuanto=quantum;
+				}
+				
+				/*********************************************************/
+				// Sacar un proceso de listo y lo paso al CPU  
+				prosesarProceso();
+				
+				// Reviso CPU y ejecuto proceso 
+				if (ejecutar(auxTabla,columna)) {
+					prosesarProceso(); // Caso de que se bloquea o termina Proceso anterior paso otro proceso ha estado Ejecutando 
+					ejecutar(auxTabla,columna);
+					// recupero quantum total nuevo
+					cuanto=quantum;
+				}
+				// bien
+				cuanto--;
+				// Las E/S se realiza en paralelo
+				ejecutarEyS(auxTabla,columna);
+				
+			}// Fin del tiempo de la tabla 
+		}
+		return auxTabla;
+	}
+
 	// Módulos para los planificadores ->
 	/*------------------------------------------------------*/
 	public boolean listarProcesoEntrada(List<Proceso> procesos,int columna){
 		boolean add=false;
 		for (int fila = 0; fila < procesos.size(); fila++) {
 			if (procesos.get(fila).getComienzaTiempo() == (columna + 1)) {
-				// Guardo proceso a listo
+				// Estado de proceso a: Listo
 				listarProcesoFIFO(procesos.get(fila));
-				// Ordeno por prioridad lista de Listos 
 				add=true;
 			}
-		}// Procesos por fila
+		}
 		return add;
 	}
 	
@@ -379,12 +467,15 @@ public class admProcesamiento {
 		int i = 0;
 		int reiniciar = getBuffers().getLstProcesos().size();
 		int lenD = getBuffers().getLstProcesos().size();
-		while (reiniciar > 0) {// Solución para sacar más bloqueados 
+		//System.out.println( getBuffers().getLstProcesos()+"\n");
+		// ordenar
+		while (reiniciar > 0) {// Se saca procesos de Estado Bloqueado a:
 			i = 0;
 			while (i < lenD) {
 				if (getBuffers().getLstProcesos().get(i).getDuracion().getEyS() <= 0) {
+					// Estado de proceso a: Listo
 					listarProcesoFIFO(desbloquearProceso(getBuffers().getLstProcesos().get(i).getIdProceso()));
-					// Como saque un Proceso, entonces
+					// Se saco un Proceso, entonces:
 					lenD--;
 					i = getBuffers().getLstProcesos().size();
 					add=true;
@@ -398,10 +489,10 @@ public class admProcesamiento {
 	
 	public boolean prosesarProceso(){
 		boolean load=false;
-		// Reviso si CPU esta libre para agregar un proceso nuevo 
+		// Se saca procesos de Estado Listo a:
 		if (!getHilo().isEjecutando()) {
-			// Sacar un proceso de listo y lo paso al CPU 
 			if (!getListo().getLstProcesos().isEmpty()) {
+				// Estado de proceso a: Ejecutando
 				load=ejecutarProceso(deslistarProcesoFIFO());
 			}
 		}
@@ -415,23 +506,26 @@ public class admProcesamiento {
 		boolean nuevo=false;
 		if (getHilo().isEjecutando()) {
 			ejecutando = getHilo().ejecutarInstrucción();
-			// cargo a la tabla estado E caso 1
+			// Se carga a la tabla estado E caso 1
 			if (ejecutando && getHilo().getProceso().getDuracion().getiCPU() >= 0) {
 				auxTabla[getHilo().getProceso().getIdProceso() - 1][columna].setEstado("E");
 			}
-			// Cargo a la tabla estado E caso 2
+			// Se carga a la tabla estado E caso 2
 			if (ejecutando && getHilo().getProceso().getDuracion().getfCPU() >= 0) {
 				auxTabla[getHilo().getProceso().getIdProceso() - 1][columna].setEstado("E");
 			}
-			// Paso el proceso a bloqueado o lo Termino
+			// Se saca procesos de Estado Ejecutando a:
 			if (ejecutando && getHilo().getProceso().getDuracion().getiCPU() == -1 && getHilo().getProceso().getDuracion().getfCPU() == -1) {
+				// Estado de proceso a: Terminado
 				auxTabla[getHilo().getProceso().getIdProceso() - 1][columna].setEstado("T");
-				terminarProceso(); // elimino el Proceso
-				bloquear = false; // aviso que no bloquee
+				terminarProceso();
+				bloquear = false; // Se avisa a modulo Estado de proceso a: Bloqueado
 				nuevo=true;
 			}
-			if (bloquear) {// no tira error de hilo vacío cuidado con esta parte que puede ser causa errores por la id que traigo que es distinto que el index :) Revisar a futuro porque me daba error
+			// Se saca procesos de Estado Ejecutando a:
+			if (bloquear) {// NOTA: no tira error de hilo vacío cuidado con esta parte que puede ser causa errores por la id que traigo que es distinto que el index :) Revisar a futuro porque me daba error
 				if (ejecutando && getHilo().getProceso().getDuracion().getiCPU() == -1 && getHilo().getProceso().getDuracion().getfCPU() == traerProceso(getHilo().getProceso().getIdProceso() - 1).getDuracion().getfCPU()) {
+					// Estado de proceso a: Bloqueado
 					bloquearProceso(terminarProceso());
 					nuevo=true;
 				}
@@ -445,6 +539,7 @@ public class admProcesamiento {
 		if (!getBuffers().getLstProcesos().isEmpty() ) {
 			for (Proceso proceso : getBuffers().getLstProcesos()) {
 				if (proceso.getDuracion().getEyS() > 0) {
+					// Se carga a la tabla estado B
 					getBuffers().ejecutarEyS(proceso.getIdProceso());
 					auxTabla[proceso.getIdProceso() - 1][columna].setEstado("B");
 					run=true;
