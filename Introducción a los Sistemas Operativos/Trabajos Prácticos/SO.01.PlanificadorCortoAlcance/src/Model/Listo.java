@@ -110,12 +110,42 @@ public class Listo {
 	}
 
 	public boolean ordenarTiempoTotal() {
-		
+		boolean ordenado=false;
+		// Ordeno lista por InsertionSort
+		ordenado=InsertionSort();
+		return ordenado;
+	}
+	
+	public boolean ordenarTiempoRestante() {
+		boolean ordenado=false;
+		// Se calcula tiempo restante
+		int lenD = getLstProcesos().size();
+		Proceso procesoAux = new Proceso();
+		int j=0;
+		int iCPU=0;
+		int fCPU=0;
+		while (j<lenD) {
+			iCPU=0;
+			fCPU=0;
+			procesoAux=getLstProcesos().get(j);
+			if (procesoAux.getDuracion().getiCPU()>0) {
+				iCPU=procesoAux.getDuracion().getiCPU();
+			}
+			if (procesoAux.getDuracion().getfCPU()>0) {
+				fCPU=procesoAux.getDuracion().getfCPU();
+			}
+			procesoAux.getDuracion().setTiempoTotal(iCPU+fCPU);
+			j++;
+		}
+		// Se Ordena lista con: InsertionSort
+		ordenado=InsertionSort();
+		return ordenado;
+	}
+	
+	private boolean InsertionSort(){
 		int lenD = getLstProcesos().size();
 		Proceso procesoAux = new Proceso();int k;
 		boolean ordenado=false;
-
-		// Ordeno lista por InsertionSort
 		for(int i=1;i<lenD;i++){
 			procesoAux=getLstProcesos().get(i);
 			k=i-1;
@@ -130,7 +160,7 @@ public class Listo {
 			}
 			getLstProcesos().set(k+1, procesoAux);
 		}
-		return ordenado;
+		return true;
 	}
 	
 	@Override

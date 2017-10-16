@@ -91,6 +91,30 @@ public class Buffers {
 		return procesoAux;
 	}
 
+	public boolean ordenarId() {
+
+		int lenD = getLstProcesos().size();
+		Proceso procesoAux = new Proceso();int k;
+		boolean ordenado=false;
+
+		// Ordeno lista por InsertionSort
+		for(int i=1;i<lenD;i++){
+			procesoAux=getLstProcesos().get(i);
+			k=i-1;
+			ordenado=false;
+			while(!ordenado && k>=0){
+				if(procesoAux.getIdProceso()<getLstProcesos().get(k).getIdProceso()){	
+					getLstProcesos().set(k+1, getLstProcesos().get(k));
+					k=k-1;
+				}else{
+					ordenado=true;
+				}
+			}
+			getLstProcesos().set(k+1, procesoAux);
+		}
+		return ordenado;
+	}
+	
 	@Override
 	public String toString() {
 		String string = "IdBuffers=" + getIdBuffers();

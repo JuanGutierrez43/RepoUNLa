@@ -125,11 +125,18 @@ public class admProcesamiento {
 	// Listar
 	public boolean listarProcesoFIFO(Proceso proceso) {
 		boolean validate = false;
-		// Agrego al final
+		// Se Agrega al final
 		validate = getListo().getLstProcesos().add(proceso);
 		return validate;
 	}
 
+	public boolean listarProcesoLIFO(Proceso proceso) {
+		// Se Agrega al principio 
+		int index=0;
+		getListo().getLstProcesos().add(index,proceso);
+		return true;
+	}
+	
 	public Proceso deslistarProcesoFIFO() {
 		Proceso procesoAux = null;
 		// Saco el primero  
@@ -326,33 +333,38 @@ public class admProcesamiento {
 		/*-------------- Inicio Planificar Prioridad------------*/
 		// Preparo el hilo 
 		getHilo().setEjecutando(false);
-		// Contador para cargar estado
+		// Contadores
 		int cont = procesos.size();
+		
 		// Si existen Procesos cargado entonces resuelvo algoritmo 
 		if (!procesos.isEmpty()) {
 			// Por toda la tabla agrego los estados 
 			for (int columna = 0; columna < getCantidaColumnas(); columna++) {
-				// Paso proceso a listo
+				// Se Realiza Turnos Rotativos: No
+				
+				// Se pasa proceso a: Listo
 				if (cont >= 0) {
 					if (listarProcesoEntrada(procesos,columna)) {
 						cont--;
 					}
 				}
-				// Paso proceso de Bloqueado a listo
+				// Se pasa proceso Bloqueado a: Listo
 				listarProcesoBloqueado();
-				// Ordeno por Tiempo Total
-				getListo().ordenarTiempoTotal();
-				// Ordeno por Prioridad
-				getListo().ordenarPrioridad();
-				
-				// Sacar un proceso de listo y lo paso al CPU  
+				// Se Ordena: Si
+				getListo().ordenarTiempoTotal();/***Ordeno por Tiempo Total***/
+				getListo().ordenarPrioridad();/***Ordeno por Prioridad***/
+				// Se saca un proceso de Listo a: Ejecutando
 				prosesarProceso();
-				// Reviso CPU y ejecuto proceso 
+				// Se Revisa CPU y Ejecuto Proceso
 				if (ejecutar(auxTabla,columna)) {
-					prosesarProceso(); // Caso de que se bloquea o termina Proceso anterior paso otro proceso ha estado Ejecutando 
+					prosesarProceso(); /***Caso de que se bloquea o termina Proceso anterior. Se saca un proceso de Listo a: Ejecutando***/
 					ejecutar(auxTabla,columna);
+					// Se reinicia quantum: No
+					
 				}
-				// Las E/S se realiza en paralelo
+				// Se resta Quantum: No
+				
+				// Se realiza E/S: Paralelo
 				ejecutarEyS(auxTabla,columna);
 			}// Fin del tiempo de la tabla 
 		}
@@ -362,7 +374,7 @@ public class admProcesamiento {
 	public String mostrarAlgoritmoRoundRobin(int quantum) {
 		String string = "";
 		/*-------------- traer Algoritmo FIFO ------------*/
-		string += "Algoritmo Round-Robin";
+		string += "Algoritmo Round-Robin (q="+quantum+")";
 		string += "\n" + toString(planificarRoundRobin(clone(getLstProcesos()), newTable(),quantum));
 		string += "\n" + mostrarLstProceso();
 		string += "\n-> hay 1 procesador";
@@ -371,78 +383,199 @@ public class admProcesamiento {
 	}
 	
 	private Tabla[][] planificarRoundRobin(List<Proceso> procesos, Tabla[][] auxTabla,int quantum) {
-		/*-------------- Inicio Planificar Prioridad------------*/
 		// Preparo el hilo 
 		getHilo().setEjecutando(false);
-		// Contador para cargar estado
+		// Contadores
 		int cont = procesos.size();
 		int cuanto = quantum;
-		
 		// Si existen Procesos cargado entonces resuelvo algoritmo 
 		if (!procesos.isEmpty()) {
 			// Por toda la tabla agrego los estados 
 			for (int columna = 0; columna < getCantidaColumnas(); columna++) {
-				// Paso proceso a listo
+				// Se Realiza Turnos Rotativos: Si
+				if(cuanto==0)if(turnarProcesoFIFO())cuanto=quantum;
+				// Se pasa proceso a: Listo
 				if (cont >= 0) {
 					if (listarProcesoEntrada(procesos,columna)) {
 						cont--;
 					}
 				}
-				// Paso proceso de Bloqueado a listo
+				// Se pasa proceso Bloqueado a: Listo
 				listarProcesoBloqueado();
-				// Ordeno no
+				// Se Ordena: NO
 				
-				/*********************************************************/
-				// nuevo ¡¡¡
-				// quantum saco un proceso de ejecucion para que entre otro
-				
-				
-				if(cuanto<=0){ // nuevo¡¡¡
-					if (getHilo().isEjecutando()) {
-						
-						boolean end=false;
-						Proceso procesoAux=getHilo().getProceso();
-						
-						int cpuInicio=procesoAux.getDuracion().getiCPU();
-						int cpuFinal=procesoAux.getDuracion().getfCPU();
-						// Se saca proceso de Estado Ejecutando y lo paso según:
-						
-						if (cpuInicio>0) {
-							end=listarProcesoFIFO(terminarProceso()); //recibe true
-						}
-						
-						if (!end) {
-							if (cpuInicio<0 && cpuFinal==traerProceso(getHilo().getProceso().getIdProceso() - 1).getDuracion().getfCPU()) {
-								end=bloquearProceso(terminarProceso()); //recibe true
-							}
-						}
-						
-						if (!end) {
-							if (cpuInicio<0 && cpuFinal>=1) {
-								end=listarProcesoFIFO(terminarProceso()); //recibe true
-							}
-						}
-						
-					}
-					cuanto=quantum;
-				}
-				
-				/*********************************************************/
-				// Sacar un proceso de listo y lo paso al CPU  
+				// Se saca un proceso de Listo a: Ejecutando
 				prosesarProceso();
-				
-				// Reviso CPU y ejecuto proceso 
+				// Se Revisa CPU y Ejecuto Proceso
 				if (ejecutar(auxTabla,columna)) {
-					prosesarProceso(); // Caso de que se bloquea o termina Proceso anterior paso otro proceso ha estado Ejecutando 
+					prosesarProceso(); // Caso de que se bloquea o termina Proceso anterior. Se saca un proceso de Listo a: Ejecutando
 					ejecutar(auxTabla,columna);
-					// recupero quantum total nuevo
+					// Se reinicia quantum: Si
 					cuanto=quantum;
 				}
-				// bien
+				// Se resta Quantum: Si
 				cuanto--;
-				// Las E/S se realiza en paralelo
+				// Se realiza E/S: Paralelo
 				ejecutarEyS(auxTabla,columna);
+			}// Fin del tiempo de la tabla 
+		}
+		return auxTabla;
+	}
+
+	public String mostrarAlgoritmoPrioridadSPNRoundRobin(int quantum) {
+		String string = "";
+		/*-------------- traer Algoritmo FIFO ------------*/
+		string += "Algoritmo Prioridad SPN RoundRobin (q="+quantum+")";
+		string += "\n" + toString(planificarPrioridadSPNRoundRobin(clone(getLstProcesos()), newTable(),quantum));
+		string += "\n" + mostrarLstProceso();
+		string += "\n-> hay 1 procesador";
+		string += "\n-> E/S Se realiza en paralelo\n";
+		return string;
+	}
+	
+	private Tabla[][] planificarPrioridadSPNRoundRobin(List<Proceso> procesos, Tabla[][] auxTabla,int quantum) {
+		// Preparo el hilo 
+		getHilo().setEjecutando(false);
+		// Contadores
+		int cont = procesos.size();
+		int cuanto = quantum;
+		// Si existen Procesos cargado entonces resuelvo algoritmo 
+		if (!procesos.isEmpty()) {
+			// Por toda la tabla agrego los estados 
+			for (int columna = 0; columna < getCantidaColumnas(); columna++) {
+				// Se Realiza Turnos Rotativos: Si
+				if(cuanto==0)if(turnarProcesoFIFO())cuanto=quantum;
 				
+				if (cont >= 0) {
+					if (listarProcesoEntrada(procesos,columna)) {
+						cont--;
+					}
+				}
+				// Se pasa proceso Bloqueado a: Listo
+				listarProcesoBloqueado();
+				
+				// Se Ordena: Si
+				// Ordeno por Tiempo Total
+				getListo().ordenarTiempoTotal();
+				// Ordeno por Prioridad
+				getListo().ordenarPrioridad();
+				// Se pasa proceso a: Listo
+				
+				
+				// Se saca un proceso de Listo a: Ejecutando
+				prosesarProceso();
+				// Se Revisa CPU y Ejecuto Proceso
+				if (ejecutar(auxTabla,columna)) {
+					prosesarProceso(); // Caso de que se bloquea o termina Proceso anterior. Se saca un proceso de Listo a: Ejecutando
+					ejecutar(auxTabla,columna);
+					// Se reinicia quantum: Si
+					cuanto=quantum;
+				}
+				// Se resta Quantum: Si
+				cuanto--;
+				// Se realiza E/S: Paralelo
+				ejecutarEyS(auxTabla,columna);
+			}// Fin del tiempo de la tabla 
+		}
+		return auxTabla;
+	}
+	
+	public String mostrarAlgoritmoPrioridadesApropiativos() {
+		String string = "";
+		string += "Algoritmo Prioridades (Apropiativos)";
+		string += "\n" + toString(planificarPrioridadesApropiativos(clone(getLstProcesos()), newTable(),1));
+		string += "\n" + mostrarLstProceso();
+		string += "\n-> hay 1 procesador";
+		string += "\n-> E/S Se realiza en paralelo\n";
+		return string;
+	}
+	
+	private Tabla[][] planificarPrioridadesApropiativos(List<Proceso> procesos, Tabla[][] auxTabla,int quantum) {
+		// Preparo el hilo 
+		getHilo().setEjecutando(false);
+		// Contadores
+		int cont = procesos.size();
+		int cuanto = quantum;
+		// Si existen Procesos cargado entonces resuelvo algoritmo 
+		if (!procesos.isEmpty()) {
+			// Por toda la tabla agrego los estados 
+			for (int columna = 0; columna < getCantidaColumnas(); columna++) {
+				// Se Realiza Turnos Rotativos: Si
+				if(cuanto==0)if(turnarProcesoLIFO())cuanto=quantum;
+				// Se pasa proceso a: Listo
+				if (cont >= 0) {
+					if (listarProcesoEntrada(procesos,columna)) {
+						cont--;
+					}
+				}
+				// Se pasa proceso Bloqueado a: Listo
+				listarProcesoBloqueado();
+				// Se Ordena: Si
+				getListo().ordenarPrioridad(); /***Ordeno por Prioridad***/
+				// Se saca un proceso de Listo a: Ejecutando
+				prosesarProceso();
+				// Se Revisa CPU y Ejecuto Proceso
+				if (ejecutar(auxTabla,columna)) {
+					prosesarProceso(); // Caso de que se bloquea o termina Proceso anterior. Se saca un proceso de Listo a: Ejecutando
+					ejecutar(auxTabla,columna);
+					// Se reinicia quantum: Si
+					cuanto=quantum;
+				}
+				// Se resta Quantum: Si
+				cuanto--;
+				// Se realiza E/S: Paralelo
+				ejecutarEyS(auxTabla,columna);
+			}// Fin del tiempo de la tabla 
+		}
+		return auxTabla;
+	}
+
+	public String mostrarAlgoritmoSRT() {
+		String string = "";
+		string += "Algoritmo SRT (Apropiativos)";
+		string += "\n" + toString(planificarSRT(clone(getLstProcesos()), newTable(),1));
+		string += "\n" + mostrarLstProceso();
+		string += "\n-> hay 1 procesador";
+		string += "\n-> E/S Se realiza en paralelo\n";
+		return string;
+	}
+	
+	private Tabla[][] planificarSRT(List<Proceso> procesos, Tabla[][] auxTabla,int quantum) {
+		// Preparo el hilo 
+		getHilo().setEjecutando(false);
+		// Contadores
+		int cont = procesos.size();
+		int cuanto = quantum;
+		// Si existen Procesos cargado entonces resuelvo algoritmo 
+		if (!procesos.isEmpty()) {
+			// Por toda la tabla agrego los estados 
+			for (int columna = 0; columna < getCantidaColumnas(); columna++) {
+				// Se Realiza Turnos Rotativos: Si
+				if(cuanto==0)if(turnarProcesoLIFO())cuanto=quantum;
+				// Se pasa proceso a: Listo
+				if (cont >= 0) {
+					if (listarProcesoEntrada(procesos,columna)) {
+						cont--;
+					}
+				}
+				// Se pasa proceso Bloqueado a: Listo
+				listarProcesoBloqueado();
+				// Se Ordena: Si
+				getListo().ordenarTiempoRestante(); /***Ordeno por Tiempo Restante***/
+				
+				// Se saca un proceso de Listo a: Ejecutando
+				prosesarProceso();
+				// Se Revisa CPU y Ejecuto Proceso
+				if (ejecutar(auxTabla,columna)) {
+					prosesarProceso(); // Caso de que se bloquea o termina Proceso anterior. Se saca un proceso de Listo a: Ejecutando
+					ejecutar(auxTabla,columna);
+					// Se reinicia quantum: Si
+					cuanto=quantum;
+				}
+				// Se resta Quantum: Si
+				cuanto--;
+				// Se realiza E/S: Paralelo
+				ejecutarEyS(auxTabla,columna);
 			}// Fin del tiempo de la tabla 
 		}
 		return auxTabla;
@@ -467,8 +600,8 @@ public class admProcesamiento {
 		int i = 0;
 		int reiniciar = getBuffers().getLstProcesos().size();
 		int lenD = getBuffers().getLstProcesos().size();
-		//System.out.println( getBuffers().getLstProcesos()+"\n");
-		// ordenar
+		// Se Ordena: Si
+		getBuffers().ordenarId();
 		while (reiniciar > 0) {// Se saca procesos de Estado Bloqueado a:
 			i = 0;
 			while (i < lenD) {
@@ -548,6 +681,54 @@ public class admProcesamiento {
 		}
 		return run;
 	}
+	
+	public boolean turnarProcesoFIFO() {
+		boolean end=false;
+		if (getHilo().isEjecutando()) {
+			Proceso procesoAux=getHilo().getProceso();
+			int cpuInicio=procesoAux.getDuracion().getiCPU();
+			int cpuFinal=procesoAux.getDuracion().getfCPU();
+			// Se saca proceso de Estado Ejecutando y lo paso según:
+			if (cpuInicio>0) {
+				end=listarProcesoFIFO(terminarProceso()); //recibe true
+			}
+			if (!end) {
+				if (cpuInicio<0 && cpuFinal==traerProceso(getHilo().getProceso().getIdProceso() - 1).getDuracion().getfCPU()) {
+					end=bloquearProceso(terminarProceso()); //recibe true
+				}
+			}
+			if (!end) {
+				if (cpuInicio<0 && cpuFinal>=1) {
+					end=listarProcesoFIFO(terminarProceso()); //recibe true
+				}
+			}
+		}
+		return end;
+	}
+	
+	public boolean turnarProcesoLIFO() {
+		boolean end=false;
+		if (getHilo().isEjecutando()) {
+			Proceso procesoAux=getHilo().getProceso();
+			int cpuInicio=procesoAux.getDuracion().getiCPU();
+			int cpuFinal=procesoAux.getDuracion().getfCPU();
+			// Se saca proceso de Estado Ejecutando y lo paso según:
+			if (cpuInicio>0) {
+				end=listarProcesoLIFO(terminarProceso()); //recibe true
+			}
+			if (!end) {
+				if (cpuInicio<0 && cpuFinal==traerProceso(getHilo().getProceso().getIdProceso() - 1).getDuracion().getfCPU()) {
+					end=bloquearProceso(terminarProceso()); //recibe true
+				}
+			}
+			if (!end) {
+				if (cpuInicio<0 && cpuFinal>=1) {
+					end=listarProcesoLIFO(terminarProceso()); //recibe true
+				}
+			}
+		}
+		return end;
+	}
 	// @Override ->
 	/*------------------------------------------------------*/
 	@Override
@@ -606,9 +787,9 @@ public class admProcesamiento {
 
 	public List<Proceso> clone(List<Proceso> lstProcesos){
 		List<Proceso> lstProcesosAux = new ArrayList<Proceso>();
-		/*-------------- Respaldo Datos Originales ------------*/
+		/*--------------   Se Respalda Datos    ------------*/
 		for (Proceso proceso : lstProcesos) {
-			Proceso auxProceso1 = proceso.clone(); // Nuevo¡¡¡ 2017
+			Proceso auxProceso1 = proceso.clone();
 			lstProcesosAux.add(auxProceso1);
 		}
 		return lstProcesosAux;
@@ -616,7 +797,7 @@ public class admProcesamiento {
 
 	public Tabla[][] newTable(){
 		Tabla[][] auxTabla = new Tabla[getCantidadFilas()][getCantidaColumnas()];
-		/*--------------    Preparar nueva Tabla   ------------*/
+		/*-------------- Se Prepara nueva Tabla ------------*/
 		for (int i = 0; i < getCantidadFilas(); i++) {
 			for (int j = 0; j < getCantidaColumnas(); j++) {
 				auxTabla[i][j] = new Tabla(i + 1, j + 1);
