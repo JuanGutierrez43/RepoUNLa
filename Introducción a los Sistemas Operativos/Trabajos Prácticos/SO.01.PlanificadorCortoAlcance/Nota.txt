@@ -1,1 +1,0 @@
-error:1 usar 1 solo hilo
