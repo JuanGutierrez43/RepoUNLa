@@ -1,0 +1,12 @@
+https://www.python.org/downloads/
+
+lib
+1ra ->
+http://www.pygame.org/download.shtml
+2da ->
+https://pypi.python.org/pypi/pymunk/
+
+
+otro
+tiene todas la lib ->
+http://www.lfd.uci.edu/~gohlke/pythonlibs/

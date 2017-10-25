@@ -1,0 +1,19 @@
+type(3)
+<class 'int'>
+>>> type(3.145)
+<class 'float'>
+>>> type("¡Qué tal!")
+<class 'str'>
+>>> type(True)
+<class 'bool'>
+>>> x = 3
+type(x)
+SyntaxError: multiple statements found while compiling a single statement
+>>> x=3
+>>> type(x)
+<class 'int'>
+>>> type((2, 3, 4, 5))
+<class 'tuple'>
+>>> type([2, 3, 4, 5])
+<class 'list'>
+>>> 

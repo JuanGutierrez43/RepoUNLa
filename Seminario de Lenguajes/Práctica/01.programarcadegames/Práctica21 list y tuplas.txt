@@ -1,0 +1,19 @@
+//lista si se cambian de valor
+>>> x = [1,2]
+>>> print(x)
+[1, 2]
+>>> print(x[0])
+1
+>>> x[0] = 22
+>>> print(x)
+[22, 2]
+
+//tuplas no se cambian de valor
+>>> x = (1, 2)
+>>> print(x)
+(1, 2)
+>>> x[0] = 22
+Traceback (most recent call last):
+  File "<pyshell#16>", line 1, in <module>
+    x[0] = 22
+TypeError: 'tuple' object does not support item assignment
